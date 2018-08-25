@@ -118,8 +118,7 @@ def demo_jar_upgraded(model):
     with cd(os.path.join(appliation1, 'target')):
         with settings(warn_only=True):
             if int(run(" [ -e '" + model + ".jar' ] && echo 11 || echo 10")) == 11:
-                run('cp -rf  ' + model + '.jar  ./backup/' + model + '$(date '
-                                                                     '+%Y-%m-%d)_bak')
+                run('cp -rf  ' + model + '.jar  ./backup/' + model + '$(date +%Y%m%d.%H.%M.%S)')
             run('mv -f  ./temp/' + model + '.jar ./')
     print(blue("[INFO]  ............................................ 替换jar文件成功 > demo_jar_prod"))
 
