@@ -104,7 +104,6 @@ def demo_jar_upgraded(model):
     print("[INFO]  ............................................ 替换jar文件 > demo_jar_prod")
     with cd(os.path.join(appliation1, 'target')):
         with settings(warn_only=True):
-            run('rm -rf *')
             run('cp -rf  ' + model + '.jar  ./backup/' + model + '$(date '
                                                                  '+%Y-%m-%d)_bak')
             run('mv -f  ./temp/' + model + '.jar ./')
