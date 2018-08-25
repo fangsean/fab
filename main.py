@@ -6,15 +6,15 @@ from fabric.api import *
 
 def release(releases):
     if releases == 'bs':
-        local('fab -f ./release/demo1.py go')
+        local('fab -f ./demo1.py go')
     elif releases == 'demo1':
-        local('fab -f ./release/demo1.py go')
+        local('fab -f ./demo1.py go')
     elif releases == 'demo2':
-        local('fab -f ./release/demo2.py go')
+        local('fab -f ./demo2.py go')
     elif releases == 'demo3':
-        local('fab -f ./release/demo3.py go')
+        local('fab -f ./demo3.py go')
     elif releases == 'demo4':
-        local('fab -f ./release/demo4.py go')
+        local('fab -f ./demo4.py go')
     else:
         exit('输入有误，工程名称错误...')
 
