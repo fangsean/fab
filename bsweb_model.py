@@ -91,8 +91,8 @@ def demo_jar_check(model):
 def demo_server_kill(model):
     print("[INFO]  ............................................ 停止服务 > demo_kill")
     try:
-        result = open_shell('ps -ef |grep java |grep ' + model + ' |grep -v grep | awk \'{print $2}\'')
-        IP = open_shell('jps | awk  \'{ if($(NF) == \"' + model + '.jar\"){print $(NF-1)}}\' ')
+        result = open_shell('ps -ef |grep java |grep ' + model + ' |grep -v grep | awk \'{print $2}\' && exit ')
+        IP = open_shell('jps | awk  \'{ if($(NF) == \"' + model + '.jar\"){print $(NF-1)}}\' && exit')
         print("result: %s" % (result))
         print("IP: %s" % (IP))
         if result != None:
