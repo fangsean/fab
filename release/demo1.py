@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
-import confirm
+from fabric.contrib.console import confirm
 from fabric.api import *
 from fabric.colors import *
 from utils.pathfile import gitpath, branch, git1, user, password, hosts1, buildpath1, appliation1, local_path1
