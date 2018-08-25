@@ -69,7 +69,7 @@ def demo_mvn_clone():
 def demo_mvn_package(deploy='prod'):
     print("[INFO]  ............................................ 打包 > demo_mvn_package")
     with lcd(gitpath):
-        local('mvn clean install -Dmaven.test.skip -U %s' % (deploy))
+        local('mvn clean compile package install -Dmaven.test.skip=true -U -P %s' % (deploy))
     print("[INFO]  ............................................ 打包成功 > demo_mvn_package")
 
 
