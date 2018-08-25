@@ -90,7 +90,7 @@ def demo_jar_check(model):
 @runs_once
 def demo_server_kill(model):
     print("[INFO]  ............................................ 停止服务 > demo_kill")
-    open_shell('jps | awk  \'{ if($(NF) == \"' + model + '.jar\"){print $(NF-1)}}\' |xargs  kill -9 &&  exit')
+    run('jps | awk  \'{ if($(NF) == \"' + model + '.jar\"){print $(NF-1)}}\' |xargs  kill -9 ')
     print(blue("[INFO]  ............................................ 停止服务完毕 > demo_kill"))
 
 
@@ -125,7 +125,7 @@ def demo_netstat(model):
     print("[INFO]  ............................................ 查看服务 > demo_netstat")
     print(".................正在查看，请稍等...........................")
     local('sleep 5')
-    open_shell("ps aux | grep java | grep -v grep  &&  exit")
+    run("ps aux | grep java | grep -v grep ")
     local('sleep 1')
     open_shell("jps  &&  exit")
 
