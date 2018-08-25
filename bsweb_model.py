@@ -96,7 +96,7 @@ def demo_server_kill(model):
         print("result: %s" % (result))
         print("IP: %s" % (IP))
         if result != None:
-            open_shell("kill -9  " + int(result) +" && exit")
+            open_shell("kill -9  " + result +" && exit")
             local('sleep 2')
         # open_shell('jps | awk  \'{ if($(NF) == \"' + model + '.jar\"){print $(NF-1)}}\' |xargs  kill -9 ')
         else:
