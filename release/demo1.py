@@ -10,8 +10,7 @@ import configparser
 
 # config
 conf = configparser.ConfigParser()
-print(conf)
-conf.read("C:\\Users\\13585\PycharmProjects\\untitled\properties\\path.properties", encoding='utf-8')
+conf.read("C:/Users/13585/PycharmProjects/untitled\properties/path.properties", encoding='utf-8')
 conf.sections()
 
 # user and passwd
