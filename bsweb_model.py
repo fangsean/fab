@@ -91,7 +91,7 @@ def demo_jar_check(model):
 def demo_server_kill(model):
     print("[INFO]  ............................................ 停止服务 > demo_kill")
     try:
-        while(true):
+        while True:
             result = run('ps -ef |grep java |grep ' + model + ' |grep -v grep | awk \'{print $2}\' ')
             PID = run('jps | awk  \'{ if($(NF) == \"' + model + '.jar\"){print $(NF-1)}}\'')
             print("PID: %s" % (PID))
