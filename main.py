@@ -6,7 +6,7 @@ from fabric.api import *
 
 def release(releases):
     if releases == 'bsweb':
-        local('fab -f ./bsweb_model.py go')
+        local('fab -f ./bsweb_model.py go:deploy=pre,model=bsweb')
     elif releases == 'demo1':
         local('fab -f ./demo1.py go')
     elif releases == 'demo2':
