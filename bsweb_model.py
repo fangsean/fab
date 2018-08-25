@@ -132,7 +132,7 @@ def demo_end(model):
 @task()
 @parallel
 def go(deploy, model):
-    {
+    {[
         execute(demo_merge),
         execute(demo_mvn_package, deploy),
         execute(demo_jar_push, model),
@@ -141,4 +141,4 @@ def go(deploy, model):
         # execute(demo_server_startup, model),
         # execute(demo_netstat,model),
         execute(demo_end, model)
-    }
+    ]}
