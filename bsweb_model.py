@@ -91,7 +91,12 @@ def demo_jar_check(model):
 def demo_server_kill(model):
     print("[INFO]  ............................................ 停止服务 > demo_kill")
     try:
-        open_shell('ps -ef |grep java |grep '+model+' |awk \'{print $2}\' |xargs  kill -9  && exit ')
+        result = open_shell('ps -ef |grep java |grep ' + model + ' |grep -v grep | awk \'{print $2}\'')
+        IP = open_shell('jps | awk  \'{ if($(NF) == \"' + model + '.jar\"){print $(NF-1)}}\' ')
+        print("result: %s" % (result))
+        print("IP: %s" % (IP))
+        if result != None:
+            open_shell("kill -9  " + int(result) +" && exit")
         # open_shell('jps | awk  \'{ if($(NF) == \"' + model + '.jar\"){print $(NF-1)}}\' |xargs  kill -9 ')
     except Exception as e:
         print(blue("[INFO]  ............................................ 没有发现服务 > demo_kill"))
@@ -110,7 +115,7 @@ def demo_jar_upgraded(model):
         with settings(warn_only=True):
             if int(run(" [ -e '" + model + ".jar' ] && echo 11 || echo 10")) == 11:
                 run('cp -rf  ' + model + '.jar  ./backup/' + model + '$(date '
-                                                                 '+%Y-%m-%d)_bak')
+                                                                     '+%Y-%m-%d)_bak')
             run('mv -f  ./temp/' + model + '.jar ./')
     print(blue("[INFO]  ............................................ 替换jar文件成功 > demo_jar_prod"))
 
