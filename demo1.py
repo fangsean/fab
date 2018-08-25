@@ -1,11 +1,8 @@
-#!/usr/bin/env python3
 # -*- coding:utf-8 -*-
-
 from fabric.contrib.console import confirm
 from fabric.api import *
 from fabric.colors import *
-
-from pathfile import user, password, hosts1, gitpath, branch, git1, buildpath1, appliation1, local_path1
+from setting import user, password, hosts1, gitpath, git1, branch, buildpath1, appliation1, local_path1
 
 env.user = user
 env.password = password

@@ -12,4 +12,3 @@ def task2():
 def do():
     execute(task1)
     execute(task2)
-
