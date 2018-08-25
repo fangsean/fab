@@ -90,7 +90,10 @@ def demo_jar_check(model):
 @runs_once
 def demo_server_kill(model):
     print("[INFO]  ............................................ 停止服务 > demo_kill")
-    run('jps | awk  \'{ if($(NF) == \"' + model + '.jar\"){print $(NF-1)}}\' |xargs  kill -9 ')
+    try:
+        run('jps | awk  \'{ if($(NF) == \"' + model + '.jar\"){print $(NF-1)}}\' |xargs  kill -9 ')
+    except e:
+        print(blue("[INFO]  ............................................ 没有发现服务 > demo_kill"))
     print(blue("[INFO]  ............................................ 停止服务完毕 > demo_kill"))
 
 
@@ -104,7 +107,8 @@ def demo_jar_upgraded(model):
     print("[INFO]  ............................................ 替换jar文件 > demo_jar_prod")
     with cd(os.path.join(appliation1, 'target')):
         with settings(warn_only=True):
-            run('cp -rf  ' + model + '.jar  ./backup/' + model + '$(date '
+            if int(run(" [ -e '" + model + ".jar' ] && echo 11 || echo 10")) == 11:
+                run('cp -rf  ' + model + '.jar  ./backup/' + model + '$(date '
                                                                  '+%Y-%m-%d)_bak')
             run('mv -f  ./temp/' + model + '.jar ./')
     print(blue("[INFO]  ............................................ 替换jar文件成功 > demo_jar_prod"))
@@ -139,11 +143,11 @@ def demo_end(model):
 @task()
 @parallel
 def go(deploy, model):
-    execute(demo_merge),
-    execute(demo_mvn_package, deploy),
-    execute(demo_jar_push, model),
-    execute(demo_server_kill, model),
-    execute(demo_jar_upgraded, model),
+    # execute(demo_merge),
+    # execute(demo_mvn_package, deploy),
+    # execute(demo_jar_push, model),
+    # execute(demo_server_kill, model),
+    # execute(demo_jar_upgraded, model),
     execute(demo_server_startup, model),
     execute(demo_netstat, model),
     execute(demo_end, model)
