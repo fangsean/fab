@@ -20,7 +20,7 @@ def release(releases):
 
 
 if __name__ == "__main__":
-        ob = ['sb','demo1, demo2, demo3, demo4']
+        ob = ['bs','demo1, demo2, demo3, demo4']
         print('Release demo: ' + str(ob))
         releases = input("please input release system:")
         release(releases)
