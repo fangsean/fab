@@ -125,7 +125,7 @@ def demo_server_startup():
 
 # 查看服务
 @runs_once
-def demo_netstat(model):
+def demo_netstat():
     print("[INFO]  ............................................ 查看服务 > demo_netstat")
     print(".................正在查看，请稍等...........................")
     local('sleep 5')
@@ -148,6 +148,6 @@ def go(deploy, model):
     # execute(demo_jar_push, model),
     # execute(demo_server_kill, model),
     # execute(demo_jar_upgraded, model),
-    execute(demo_server_startup, model),
-    execute(demo_netstat, model),
+    execute(demo_server_startup),
+    execute(demo_netstat),
     execute(demo_end, model)
