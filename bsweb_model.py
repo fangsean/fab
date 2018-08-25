@@ -92,7 +92,7 @@ def demo_server_kill(model):
     print("[INFO]  ............................................ 停止服务 > demo_kill")
     try:
         run('jps | awk  \'{ if($(NF) == \"' + model + '.jar\"){print $(NF-1)}}\' |xargs  kill -9 ')
-    except e:
+    except:
         print(blue("[INFO]  ............................................ 没有发现服务 > demo_kill"))
     print(blue("[INFO]  ............................................ 停止服务完毕 > demo_kill"))
 
