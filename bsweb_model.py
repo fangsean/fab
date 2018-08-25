@@ -91,16 +91,17 @@ def demo_jar_check(model):
 def demo_server_kill(model):
     print("[INFO]  ............................................ 停止服务 > demo_kill")
     try:
-        result = run('ps -ef |grep java |grep ' + model + ' |grep -v grep | awk \'{print $2}\' ')
-        IP = run('jps | awk  \'{ if($(NF) == \"' + model + '.jar\"){print $(NF-1)}}\'')
-        print("result: %s" % (result))
-        print("IP: %s" % (IP))
-        if result != None:
-            open_shell("kill -9  " + result +" && exit")
-            local('sleep 2')
-        # open_shell('jps | awk  \'{ if($(NF) == \"' + model + '.jar\"){print $(NF-1)}}\' |xargs  kill -9 ')
-        else:
-            print(yellow("[INFO]  ............................................ 没有发现服务 > demo_kill"))
+        while(true):
+            result = run('ps -ef |grep java |grep ' + model + ' |grep -v grep | awk \'{print $2}\' ')
+            PID = run('jps | awk  \'{ if($(NF) == \"' + model + '.jar\"){print $(NF-1)}}\'')
+            print("PID: %s" % (PID))
+            if result != None or PID != None:
+                open_shell("kill -9  %s && exit" % (PID))
+                sleep(2)
+            # open_shell('jps | awk  \'{ if($(NF) == \"' + model + '.jar\"){print $(NF-1)}}\' |xargs  kill -9 ')
+            else:
+                print(yellow("[INFO]  ............................................ 已经杀掉进程，没有发现服务 > demo_kill"))
+                break
     except Exception as e:
         print(red(str(e)))
     print(blue("[INFO]  ............................................ 停止服务完毕 > demo_kill"))
