@@ -56,7 +56,7 @@ def demo_jar_push(model=None):
         if flag == True:
             print(yellow("[INFO]  ............................................ 已经发布 > demo_jar_push"))
         else:
-            result = put(model + '.jar', os.path.join(appliation1, 'target', model) + '.jar')
+            result = put(model + '.jar', os.path.join(appliation1, 'target','temp', model) + '.jar')
             if result.failed and not confirm("put file faild, Continue[Y/N]?"):
                 abort("Aborting file put task!")
                 print(red("[INFO]  ............................................ 远程发包失败 > demo_jar_push"))
@@ -71,11 +71,13 @@ def demo_jar_check(model):
     with lcd(local_path1):
         with settings(warn_only=True):
             lmd5 = local('md5sum ' + model + '.jar', capture=True).split(' ')[0]
-            rmd5 = run('md5sum ' + os.path.join(appliation1, 'target', model) + '.jar').split(' ')[0]
-            if lmd5 == rmd5:
-                return True
-            else:
-                return False
+            rmd5 = run('md5sum ' + os.path.join(appliation1, 'target','temp', model) + '.jar').split(' ')[0]
+            print("lmd5 %s",(lmd5))
+            print("rmd5 %s",(rmd5))
+        if lmd5 == rmd5:
+            return True
+        else:
+            return False
 
 
 # 4）停止服务 jps | awk  '{ if($(NF) == "scmweb.jar"){print $(NF-1)}}' |xargs  kill -9
@@ -132,7 +134,6 @@ def demo_end(model):
 @task()
 @parallel
 def go(deploy, model):
-    {[
         execute(demo_merge),
         execute(demo_mvn_package, deploy),
         execute(demo_jar_push, model),
@@ -141,4 +142,3 @@ def go(deploy, model):
         # execute(demo_server_startup, model),
         # execute(demo_netstat,model),
         execute(demo_end, model)
-    ]}
