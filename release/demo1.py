@@ -4,7 +4,8 @@
 from fabric.contrib.console import confirm
 from fabric.api import *
 from fabric.colors import *
-from myutils.pathfile import gitpath, branch, git1, user, password, hosts1, buildpath1, appliation1, local_path1
+
+from pathfile import user, password, hosts1, gitpath, branch, git1, buildpath1, appliation1, local_path1
 
 env.user = user
 env.password = password
