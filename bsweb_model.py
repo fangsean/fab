@@ -96,7 +96,8 @@ def demo_server_kill(model):
         print("result: %s" % (result))
         print("IP: %s" % (IP))
         if result != None:
-            open_shell("kill -9  " + int(result) +" && sleep 3 && exit")
+            open_shell("kill -9  " + int(result) +" && exit")
+            local('sleep 2')
         # open_shell('jps | awk  \'{ if($(NF) == \"' + model + '.jar\"){print $(NF-1)}}\' |xargs  kill -9 ')
         else:
             print(yellow("[INFO]  ............................................ 没有发现服务 > demo_kill"))
@@ -146,7 +147,7 @@ def demo_netstat():
 
 
 # 发布成功
-@parallel
+@runs_once
 def demo_end(model):
     print(blue("[INFO]  ............................................ [" + model + "] 系统发布完毕..."))
 
@@ -154,11 +155,11 @@ def demo_end(model):
 @task()
 @parallel
 def go(deploy, model):
-    # execute(demo_merge),
-    # execute(demo_mvn_package, deploy),
-    # execute(demo_jar_push, model),
+    execute(demo_merge),
+    execute(demo_mvn_package, deploy),
+    execute(demo_jar_push, model),
     execute(demo_server_kill, model),
-    # execute(demo_jar_upgraded, model),
+    execute(demo_jar_upgraded, model),
     execute(demo_server_startup),
     execute(demo_netstat),
     execute(demo_end, model)
