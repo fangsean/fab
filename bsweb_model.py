@@ -96,7 +96,8 @@ def demo_server_kill(model):
             PID = run('jps | awk  \'{ if($(NF) == \"' + model + '.jar\"){print $(NF-1)}}\'')
             print("PID: %s" % (PID))
             if result != None or PID != None:
-                open_shell("kill -9  %s && exit" % (PID))
+                print(yellow("[INFO]  ............................................ 进程存在，进行kill > demo_kill"))
+                run("kill  %s && sleep 1" % (PID),pty=False)
                 sleep(2)
             # open_shell('jps | awk  \'{ if($(NF) == \"' + model + '.jar\"){print $(NF-1)}}\' |xargs  kill -9 ')
             else:
