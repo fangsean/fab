@@ -67,37 +67,47 @@ def demo_mvn_clone():
 
 @runs_once
 def demo_mvn_package(deploy='prod'):
+    print("[INFO]  ............................................ 打包 > demo_mvn_package")
     with lcd(gitpath):
         local('mvn clean install -Dmaven.test.skip -U %s' % (deploy))
+    print("[INFO]  ............................................ 打包成功 > demo_mvn_package")
 
 
 @runs_once
 def demo_pull():
+    print("[INFO]  ............................................ 更新 > demo_pull")
     with lcd(buildpath1):
         local('git checkout developer')
         local('git pull')
+    print("[INFO]  ............................................ 更新成功 > demo_pull")
 
 
 @runs_once
 def demo_merge():
+    print("[INFO]  ............................................ 合并 > demo_merge")
     with lcd(buildpath1):
         local('git fetch')
         local('git merge origin/developer')
+    print("[INFO]  ............................................ 合并成功 > demo_merge")
 
 
 @runs_once
 def demo_put_before():
+    print("[INFO]  ............................................ 发布之前 备份 > demo_put_before")
     with cd(appliation1):
         with settings(warn_only=True):
             run('mv demo.war ../backup/demo.war_$(date '
                 '+%Y-%m-%d)_bak')
             run('rm -rf *')
+    print("[INFO]  ............................................ 备份成功 > demo_put_before")
 
 
 @runs_once
 def demo_put():
+    print("[INFO]  ............................................ 远程发包 > demo_put")
     with lcd(local_path1):
         put('bsweb.jar', appliation1)
+    print("[INFO]  ............................................ 远程发包成功 > demo_put")
 
 
 @runs_once
@@ -143,6 +153,6 @@ def go():
     execute(demo_merge)
     execute(demo_mvn_package)
     execute(demo_put)
-    # execute(demo_jar)
+    execute(demo_jar)
     # execute(demo_check)
     # execute(demo_netstat)
