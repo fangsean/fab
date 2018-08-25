@@ -96,10 +96,12 @@ def demo_server_kill(model):
         print("result: %s" % (result))
         print("IP: %s" % (IP))
         if result != None:
-            open_shell("kill -9  " + int(result) +" && exit")
+            open_shell("kill -9  " + int(result) +" && sleep 3 && exit")
         # open_shell('jps | awk  \'{ if($(NF) == \"' + model + '.jar\"){print $(NF-1)}}\' |xargs  kill -9 ')
+        else:
+            print(yellow("[INFO]  ............................................ 没有发现服务 > demo_kill"))
     except Exception as e:
-        print(blue("[INFO]  ............................................ 没有发现服务 > demo_kill"))
+        print(red(str(e)))
     print(blue("[INFO]  ............................................ 停止服务完毕 > demo_kill"))
 
 
@@ -140,7 +142,7 @@ def demo_netstat():
     run("ps aux | grep java | grep -v grep ", pty=False)
     local('sleep 1')
     print("[INFO]  ............................................ JPS > ")
-    open_shell("jps ")
+    open_shell("jps && exit ")
 
 
 # 发布成功
