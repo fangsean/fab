@@ -5,8 +5,8 @@ from fabric.api import *
 
 
 def release(releases):
-    if releases == 'bs':
-        local('fab -f ./demo1.py go')
+    if releases == 'bsweb':
+        local('fab -f ./bsweb_model.py go')
     elif releases == 'demo1':
         local('fab -f ./demo1.py go')
     elif releases == 'demo2':
@@ -20,7 +20,7 @@ def release(releases):
 
 
 if __name__ == "__main__":
-        ob = ['bs','demo1, demo2, demo3, demo4']
+        ob = ['bsweb','demo1, demo2, demo3, demo4']
         print('Release demo: ' + str(ob))
         releases = input("please input release system:")
         release(releases)
