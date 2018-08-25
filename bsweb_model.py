@@ -119,7 +119,8 @@ def demo_jar_upgraded(model):
 def demo_server_startup():
     print("[INFO]  ............................................ 重启服务 > demo_server_startup")
     with cd(os.path.join(appliation1, 'bin')):
-        run('find . -name "*appstart.sh" -exec {} start \;')
+        # run("find . -name '*appstart.sh' -exec {} start \;")
+        run("sh bsappstart.sh start ")
     print(blue('[INFO]  ............................................ 重启服务完成 > demo_server_startup'))
 
 
@@ -131,13 +132,13 @@ def demo_netstat():
     local('sleep 5')
     run("ps aux | grep java | grep -v grep ")
     local('sleep 1')
-    open_shell("jps  &&  exit")
+    run("jps")
 
 
 # 发布成功
 @runs_once
 def demo_end(model):
-    print(blue("[INFO]  ............................................ [" + model + "] 系统已经发布成功..."))
+    print(blue("[INFO]  ............................................ [" + model + "] 系统发布完毕..."))
 
 
 @task()
