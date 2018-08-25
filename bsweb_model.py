@@ -54,14 +54,14 @@ def demo_jar_push(model=None):
     with lcd(local_path1):
         flag = demo_jar_check(model)
         if flag == True:
-            print(yellow("[INFO]  ............................................ 已经发布 > demo_put"))
+            print(yellow("[INFO]  ............................................ 已经发布 > demo_jar_push"))
         else:
-            result = put(model + '.jar', appliation1 + model + '.jar')
+            result = put(model + '.jar', os.path.join(appliation1, 'target', model) + '.jar')
             if result.failed and not confirm("put file faild, Continue[Y/N]?"):
                 abort("Aborting file put task!")
                 print(red("[INFO]  ............................................ 远程发包失败 > demo_jar_push"))
             else:
-                print(blue("[INFO]  ............................................ 远程发包成功 > demo_put"))
+                print(blue("[INFO]  ............................................ 远程发包成功 > demo_jar_push"))
 
 
 # 校验文件
@@ -71,7 +71,7 @@ def demo_jar_check(model):
     with lcd(local_path1):
         with settings(warn_only=True):
             lmd5 = local('md5sum ' + model + '.jar', capture=True).split(' ')[0]
-            rmd5 = run('md5sum ' + os.path.join(appliation1, model) + '.jar').split(' ')[0]
+            rmd5 = run('md5sum ' + os.path.join(appliation1, 'target', model) + '.jar').split(' ')[0]
             if lmd5 == rmd5:
                 return True
             else:
@@ -121,8 +121,12 @@ def demo_netstat(model):
     open_shell("ps aux | grep java | grep -v grep  &&  exit")
     local('sleep 1')
     open_shell("jps  &&  exit")
-    print(blue('demo 系统已经发布成功...'))
-    print(blue("[INFO]  ............................................ demo 系统已经发布成功..."))
+
+
+# 发布成功
+@runs_once
+def demo_end(model):
+    print(blue("[INFO]  ............................................ [" + model + "] 系统已经发布成功..."))
 
 
 @task()
@@ -136,4 +140,5 @@ def go(deploy, model):
         # execute(demo_jar_upgraded, model),
         # execute(demo_server_startup, model),
         # execute(demo_netstat,model),
+        execute(demo_end, model)
     }
