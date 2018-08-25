@@ -87,7 +87,7 @@ def demo_jar_check(model):
 
 
 # 4）停止服务 jps | awk  '{ if($(NF) == "scmweb.jar"){print $(NF-1)}}' |xargs  kill -9
-@runs_once
+@parallel
 def demo_server_kill(model):
     print("[INFO]  ............................................ 停止服务 > demo_kill")
     try:
@@ -101,6 +101,7 @@ def demo_server_kill(model):
 # 备份：cp -rf /home/admin/bsweb/target/bsweb.jar  backup
 # 替换jar文件: cp -rf /home/admin/bsweb/target/temp/bsweb.jar /home/admin/bsweb/target
 @runs_once
+@parallel
 def demo_jar_upgraded(model):
     if model == None:
         return
@@ -116,27 +117,28 @@ def demo_jar_upgraded(model):
 
 # 6）重启服务：cd /home/admin/bsweb/bin; sh bsappstart.sh start
 @runs_once
+@parallel
 def demo_server_startup():
     print("[INFO]  ............................................ 重启服务 > demo_server_startup")
     with cd(os.path.join(appliation1, 'bin')):
         # run("find . -name '*appstart.sh' -exec {} start \;")
-        run("sh bsappstart.sh start ")
+        run("sh bsappstart.sh start && sleep 3 ", pty=False)
     print(blue('[INFO]  ............................................ 重启服务完成 > demo_server_startup'))
 
 
 # 查看服务
-@runs_once
+@parallel
 def demo_netstat():
     print("[INFO]  ............................................ 查看服务 > demo_netstat")
     print(".................正在查看，请稍等...........................")
     local('sleep 5')
-    run("ps aux | grep java | grep -v grep ")
+    run("ps aux | grep java | grep -v grep ", pty=False)
     local('sleep 1')
-    run("jps")
+    run("jps", pty=False)
 
 
 # 发布成功
-@runs_once
+@parallel
 def demo_end(model):
     print(blue("[INFO]  ............................................ [" + model + "] 系统发布完毕..."))
 
@@ -147,7 +149,7 @@ def go(deploy, model):
     # execute(demo_merge),
     # execute(demo_mvn_package, deploy),
     # execute(demo_jar_push, model),
-    # execute(demo_server_kill, model),
+    execute(demo_server_kill, model),
     # execute(demo_jar_upgraded, model),
     execute(demo_server_startup),
     execute(demo_netstat),
