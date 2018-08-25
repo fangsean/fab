@@ -1,4 +1,4 @@
-发布步骤：
+#### 发布步骤：
 **bs 为例**
 1）备份：cp -rf /home/admin/bsweb/target/bsweb.jar  backup
 2）打包：start /root/work/nq_basicservice/deploy/basicservice-mvn-build-prod.bat
