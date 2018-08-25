@@ -8,6 +8,9 @@ env.user = user
 env.password = password
 env.hosts = hosts1
 
+print(user)
+print(password)
+
 @runs_once
 def demo_mvn_clone():
     with lcd(gitpath):
@@ -105,7 +108,7 @@ def go():
     # execute(demo_mvn)
     execute(demo_pull)
     execute(demo_merge)
-    execute(demo_mvn_package)
+    # execute(demo_mvn_package)
     execute(demo_put)
     execute(demo_jar)
     # execute(demo_check)
