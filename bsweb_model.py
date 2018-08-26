@@ -9,11 +9,6 @@ env.password = password
 env.hosts = hosts1
 
 
-# env.roledefs = {
-#      'webservers' : ['192.168.198.246', '192.168.198.247']
-#      'dbservers' : ['192.168.198.245', '192.168.198.250']
-# }
-
 
 # 代码克隆
 @runs_once
@@ -21,6 +16,12 @@ def demo_mvn_clone():
     with lcd(gitpath):
         local('rm -rf demo')
         local('git clone -b %s %s' % (branch, git1))
+
+@runs_once
+def demo_branch_list():
+    with lcd(gitpath):
+        branchs = local('git branch -r')
+        return branchs
 
 
 # 代码更新合并
