@@ -254,14 +254,14 @@ class BackUpComponent(Component):
     def model_jar_backup(self, file):
         print("[INFO]  ............................................ 还原jar文件 > model_jar_backup")
         with cd(os.path.join(self.path_remote, 'target', 'backup')):
-            # with settings(warn_only=True):
             run("pwd")
-            if int(run(" [ -e '" + os.path.join(self.path_remote, 'target', 'backup',file) + "' ] && echo 11 || echo 10")) == 11:
-                run('cp -rf ' + os.path.join(self.path_remote, 'target', 'backup',file) + ' ' + os.path.join(self.path_remote, 'target', 'backup',self.model + Component.FILE_TYPE))
-                run('mv -f ' + ' ' + os.path.join(self.path_remote, 'target', 'backup',self.model + Component.FILE_TYPE) + ' ' +os.path.join(self.path_remote, 'target'))
-                print(blue("[INFO]  ............................................ 还原jar文件成功 > model_jar_backup"))
-            else:
-                exit(red("[INFO]  ............................................ 未发现该文件 %s" % (file)))
+            with settings(warn_only=True):
+                if int(run(" [ -e '" + os.path.join(self.path_remote, 'target', 'backup',file) + "' ] && echo 11 || echo 10")) == 11:
+                    run('cp -rf ' + os.path.join(self.path_remote, 'target', 'backup',file) + ' ' + os.path.join(self.path_remote, 'target', 'backup',self.model + Component.FILE_TYPE))
+                    run('mv -f ' + ' ' + os.path.join(self.path_remote, 'target', 'backup',self.model + Component.FILE_TYPE) + ' ' +os.path.join(self.path_remote, 'target'))
+                    print(blue("[INFO]  ............................................ 还原jar文件成功 > model_jar_backup"))
+                else:
+                    exit(red("[INFO]  ............................................ 未发现该文件 %s" % (file)))
 
     # 6）重启服务：cd /home/admin/bsweb/bin; sh bsappstart.sh start
     @runs_once
