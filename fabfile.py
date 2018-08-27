@@ -14,7 +14,7 @@ env.roledefs['root'] = ['host1', 'host2', 'host3']
 @parallel
 def git(**kwargs):
     print("***git 执行代码更新任务***")
-    if len(kwargs) < 2:
+    if len(kwargs) < 2 or 'model' not in kwargs.keys() or 'branch' not in kwargs.keys():
         print(red("\t参数缺失！"))
         print(yellow("\t请输入执行参数:"))
         print(yellow("\t\tmodel:%s" % (Component.configer.get_params("servers"))))
@@ -39,7 +39,7 @@ def git(**kwargs):
 @parallel
 def go(**kwargs):
     print("***go 执行发布任务***")
-    if len(kwargs) < 2:
+    if len(kwargs) < 2 or 'model' not in kwargs.keys() or 'deploy' not in kwargs.keys():
         print(red("\t参数缺失！"))
         print(yellow("\t请输入执行参数:"))
         print(yellow("\t\tmodel:%s" % (Component.configer.get_params("servers"))))
@@ -59,3 +59,4 @@ def go(**kwargs):
     execute(component.model_server_startup),
     execute(component.model_netstat),
     execute(component.model_end)
+
