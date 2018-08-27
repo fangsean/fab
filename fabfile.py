@@ -6,10 +6,11 @@ from fabric.colors import *
 
 from release.comm_model.Component import Component, MainComponent, GitComponent
 
-env.roledefs['root'] = ['host1', 'host2', 'host3']
+env.roledefs['go'] = ['Nq007', 'localhost']
+env.roledefs['git'] = ['localhost']
 
 
-@roles('root')
+@roles('git')
 @task()
 @parallel
 def git(**kwargs):
@@ -34,7 +35,7 @@ def git(**kwargs):
     execute(component.model_end)
 
 
-@roles('root')
+@roles('go')
 @task()
 @parallel
 def go(**kwargs):
@@ -59,4 +60,3 @@ def go(**kwargs):
     execute(component.model_server_startup),
     execute(component.model_netstat),
     execute(component.model_end)
-
