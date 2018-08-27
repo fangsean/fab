@@ -213,6 +213,19 @@ class BackUpComponent(Component):
         password = CRYPT.get_password(self.DEFAULT_DOMAIN, MainComponent.DEFAULT_PASSWORD)
         env.password = password
         env.hosts = Component.configer.get_params('server_hosts', self.model)
+        self.file = None
+
+    @runs_once
+    def model_jar_backup_list(self):
+        print(white('Release file: '))
+        while(True):
+            file = input("please input file from head list:")
+            if file == None or file == '' or self.model not in file:
+                exit(red('输入有误，文件名称不规范,重新输入...'))
+            else:
+                print(blue("您输入的文件名称是[%s]" % (file)))
+                self.file = file
+                return
 
     # 5）
     # 查看文件: ll /home/admin/tradeweb/target/backup
@@ -221,7 +234,8 @@ class BackUpComponent(Component):
         print("[INFO]  ............................................ 还原jar文件 > model_jar_backup")
         with cd(os.path.join(self.path_remote, 'target', 'backup')):
             with settings(warn_only=True):
-                result = run('ls  -l ' + os.path.join(self.path_remote, 'target','backup') + ' ' + self.model + Component.FILE_TYPE + '*')
+                result = run('ls  -l ' + os.path.join(self.path_remote, 'target',
+                                                      'backup') + ' ' + self.model + Component.FILE_TYPE + '*')
                 if "No such file or directory" in result:
                     exit(yellow("[WARN]  ............................................ 未发现备份文件"))
                 else:
@@ -252,13 +266,19 @@ class BackUpComponent(Component):
     # 还原: cp -rf /home/admin/bsweb/target/back/bswebxxxxx.jar /home/admin/bsweb/target/bsweb.jar
     @runs_once
     def model_jar_backup(self, file):
+        if file == None or file == '':
+            exit(red("备份文件错误，请检查！！"))
         print("[INFO]  ............................................ 还原jar文件 > model_jar_backup")
         with cd(os.path.join(self.path_remote, 'target', 'backup')):
             run("pwd")
             with settings(warn_only=True):
-                if int(run(" [ -e '" + os.path.join(self.path_remote, 'target', 'backup',file) + "' ] && echo 11 || echo 10")) == 11:
-                    run('cp -rf ' + os.path.join(self.path_remote, 'target', 'backup',file) + ' ' + os.path.join(self.path_remote, 'target', 'backup',self.model + Component.FILE_TYPE))
-                    run('mv -f ' + ' ' + os.path.join(self.path_remote, 'target', 'backup',self.model + Component.FILE_TYPE) + ' ' +os.path.join(self.path_remote, 'target'))
+                if int(run(" [ -e '" + os.path.join(self.path_remote, 'target', 'backup',
+                                                    file) + "' ] && echo 11 || echo 10")) == 11:
+                    run('cp -rf ' + os.path.join(self.path_remote, 'target', 'backup', file) + ' ' + os.path.join(
+                        self.path_remote, 'target', 'backup', self.model + Component.FILE_TYPE))
+                    run('mv -f ' + ' ' + os.path.join(self.path_remote, 'target', 'backup',
+                                                      self.model + Component.FILE_TYPE) + ' ' + os.path.join(
+                        self.path_remote, 'target'))
                     print(blue("[INFO]  ............................................ 还原jar文件成功 > model_jar_backup"))
                 else:
                     exit(red("[INFO]  ............................................ 未发现该文件 %s" % (file)))
