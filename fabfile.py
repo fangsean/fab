@@ -89,8 +89,8 @@ def backup(**kwargs):
             print(blue("您输入的文件名称是[%s]" % (file)))
             break
 
-    execute(component.model_server_kill),
     execute(component.model_jar_backup, file),
+    execute(component.model_server_kill),
     execute(component.model_server_startup),
     execute(component.model_netstat),
     execute(component.model_end)

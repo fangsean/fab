@@ -260,8 +260,7 @@ class BackUpComponent(Component):
                     run('mv -f ' + ' ' + self.model + Component.FILE_TYPE + ' ' + ' ../')
                     print(blue("[INFO]  ............................................ 还原jar文件成功 > model_jar_backup"))
                 else:
-                    print(red("[INFO]  ............................................ 未发现该文件 %s" % (file)))
-                    raise Exception("[ERROR]  ............................................ 未发现该文件 %s" % (file))
+                    exit(red("[INFO]  ............................................ 未发现该文件 %s" % (file)))
 
     # 6）重启服务：cd /home/admin/bsweb/bin; sh bsappstart.sh start
     @runs_once
