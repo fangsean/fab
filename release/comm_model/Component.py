@@ -152,7 +152,7 @@ class MainComponent(Component):
                 # result = run('ps -ef |grep java |grep ' + self.model + ' |grep -v grep | awk \'{print $2}\' ')
                 PID = run('jps | awk  \'{ if($(NF) == \"' + self.model + Component.FILE_TYPE + '\"){print $(NF-1)}}\'')
                 print("PID: %s" % (PID))
-                if PID != None:
+                if PID != None and PID != '' and int(PID) > 0:
                     print(yellow("[INFO]  ............................................ 进程存在，进行kill > model_kill"))
                     run("kill  %s && sleep 1" % (PID), pty=False)
                     time.sleep(1)
