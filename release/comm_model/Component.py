@@ -85,7 +85,7 @@ class GitComponent(Component):
         with lcd(self.path_local):
             local('git fetch')
             local('git checkout %s' % (self.branch))
-            local('git pull origin/%s' % (self.branch))
+            local('git pull origin %s' % (self.branch))
         print(blue("[INFO]  ............................................ 更新合并成功 > model_pull"))
 
 
