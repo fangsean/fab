@@ -66,12 +66,12 @@ def go(**kwargs):
 @task()
 @parallel
 def backup(**kwargs):
-    print(yellow("***back 执行回退任务***"))
+    print(yellow("***backup 执行回退任务***"))
     if len(kwargs) < 1 or 'model' not in kwargs.keys():
         print(red("\t参数缺失！"))
         print(yellow("\t请输入执行参数:"))
         print(yellow("\t\tmodel:%s" % (Component.configer.get_params("servers"))))
-        print(yellow("\t如 fab go:model=bsweb"))
+        print(yellow("\t如 fab backup:model=bsweb"))
         print("Do")
         sys.exit(0)
 
@@ -84,7 +84,7 @@ def backup(**kwargs):
     while(True):
         file = input("please input file from head list:")
         if file ==None or file == '' or model not in file:
-            exit(red('输入有误，文件名称不规范...'))
+            print(red('输入有误，文件名称不规范,重新输入...'))
         else:
             print(blue("您输入的文件名称是[%s]" % (file)))
             break
