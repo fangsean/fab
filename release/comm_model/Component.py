@@ -223,8 +223,7 @@ class BackUpComponent(Component):
             with settings(warn_only=True):
                 result = run('ls  -l ' + os.path.join(self.path_remote, 'target','backup') + ' ' + self.model + Component.FILE_TYPE + '*')
                 if "No such file or directory" in result:
-                    print(yellow("[WARN]  ............................................ 未发现备份文件"))
-                    raise Exception("[WARN]  ............................................ 未发现该文件")
+                    exit(yellow("[WARN]  ............................................ 未发现备份文件"))
                 else:
                     return result
 
