@@ -54,7 +54,7 @@ class prpcrypt():
     def get_password(key, passwd):
         pc = prpcrypt(key)  # 初始化密钥
         d = pc.decrypt(passwd)
-        return d.decode(__final__code)
+        return d.decode(prpcrypt.__final__code)
 
 # if __name__ == '__main__':
 #     pc = prpcrypt('nqtown')  # 初始化密钥
