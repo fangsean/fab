@@ -102,7 +102,6 @@ class MainComponent(Component):
             self.deploy = deploy
         self.path_local_target = Component.configer.get_params("path_local_target", model)
         self.path_remote = Component.configer.get_params("path_remote", model)
-        self.path_remote = Component.configer.get_params("path_remote", model)
         env.user = Component.configer.get_params('Account', 'user')
         password = CRYPT.get_password(self.DEFAULT_DOMAIN, MainComponent.DEFAULT_PASSWORD)
         env.password = password
@@ -174,9 +173,96 @@ class MainComponent(Component):
             with settings(warn_only=True):
                 if int(run(" [ -e '" + self.model + Component.FILE_TYPE + "' ] && echo 11 || echo 10")) == 11:
                     run(
-                        'cp -rf  ' + self.model + Component.FILE_TYPE + '  ./backup/' + self.model + '$(date +%Y%m%d.%H.%M.%S)')
+                        'cp -rf  ' + self.model + Component.FILE_TYPE + '  ./backup/' + self.model + Component.FILE_TYPE + '$(date +%Y%m%d.%H.%M.%S)')
                 run('mv -f  ./temp/' + self.model + Component.FILE_TYPE + ' ./')
         print(blue("[INFO]  ............................................ 替换jar文件成功 > model_jar_prod"))
+
+    # 6）重启服务：cd /home/admin/bsweb/bin; sh bsappstart.sh start
+    @runs_once
+    def model_server_startup(self):
+        print("[INFO]  ............................................ 重启服务 > model_server_startup")
+        with cd(os.path.join(self.path_remote, 'bin')):
+            # run("find . -name '*appstart.sh' -exec {} start \;")
+            # run("sh bsappstart.sh start && sleep 3 ", pty=False)
+            run("find . -name '*appstart.sh' -exec {} start \; && sleep 3 ", pty=False)
+        print(blue('[INFO]  ............................................ 重启服务完成 > model_server_startup'))
+
+    # 查看服务
+    @runs_once
+    def model_netstat(self):
+        print("[INFO]  ............................................ 查看服务 > model_netstat")
+        print(".................正在查看，请稍等...........................")
+        local('sleep 5')
+        run("ps aux | grep java | grep -v grep ", pty=False)
+        local('sleep 1')
+        print("[INFO]  ............................................ JPS > ")
+        open_shell("jps && exit ")
+
+
+class BackUpComponent(Component):
+    configer = Component.configer
+    # [Account] passwd
+    DEFAULT_PASSWORD = configer.get_params('Account', 'password')
+
+    DEFAULT_DEPLOY = 'prod'
+
+    def __init__(self, model):
+        super().__init__(model)
+        self.path_remote = Component.configer.get_params("path_remote", model)
+        env.user = Component.configer.get_params('Account', 'user')
+        password = CRYPT.get_password(self.DEFAULT_DOMAIN, MainComponent.DEFAULT_PASSWORD)
+        env.password = password
+        env.hosts = Component.configer.get_params('server_hosts', self.model)
+
+    # 5）
+    # 查看文件: ll /home/admin/tradeweb/target/backup
+    @runs_once
+    def model_jar_backup_list(self):
+        print("[INFO]  ............................................ 还原jar文件 > model_jar_backup")
+        with cd(os.path.join(self.path_remote, 'target', 'backup')):
+            with settings(warn_only=True):
+                result = run('ll  ' + self.model + Component.FILE_TYPE + '*')
+                if "No such file or directory" in result:
+                    print(yellow("[WARN]  ............................................ 未发现备份文件"))
+                    raise Exception("[WARN]  ............................................ 未发现该文件")
+                else:
+                    return result
+
+    # 4）停止服务 jps | awk  '{ if($(NF) == "scmweb.jar"){print $(NF-1)}}' |xargs  kill -9
+    @runs_once
+    def model_server_kill(self):
+        print("[INFO]  ............................................ 停止服务 > model_kill")
+        try:
+            while True:
+                # result = run('ps -ef |grep java |grep ' + self.model + ' |grep -v grep | awk \'{print $2}\' ')
+                PID = run('jps | awk  \'{ if($(NF) == \"' + self.model + Component.FILE_TYPE + '\"){print $(NF-1)}}\'')
+                print("PID: %s" % (PID))
+                if PID != None and PID != '' and int(PID) > 0:
+                    print(yellow("[INFO]  ............................................ 进程存在，进行kill > model_kill"))
+                    run("kill  %s && sleep 1" % (PID), pty=False)
+                    time.sleep(1)
+                # open_shell('jps | awk  \'{ if($(NF) == \"' + model + '.jar\"){print $(NF-1)}}\' |xargs  kill -9 ')
+                else:
+                    print(blue("[INFO]  ............................................ 已经杀掉进程，没有发现服务 > model_kill"))
+                    break
+        except Exception as e:
+            print(red(str(e)))
+        print(blue("[INFO]  ............................................ 停止服务完毕 > model_kill"))
+
+    # 5）
+    # 还原: cp -rf /home/admin/bsweb/target/back/bswebxxxxx.jar /home/admin/bsweb/target/bsweb.jar
+    @runs_once
+    def model_jar_backup(self, file):
+        print("[INFO]  ............................................ 还原jar文件 > model_jar_backup")
+        with cd(os.path.join(self.path_remote, 'target', 'backup')):
+            with settings(warn_only=True):
+                if int(run(" [ -e '" + file + "' ] && echo 11 || echo 10")) == 11:
+                    run('cp -rf ' + file + ' ' + self.model + Component.FILE_TYPE)
+                    run('mv -f ' + ' ' + self.model + Component.FILE_TYPE + ' ' + ' ../')
+                    print(blue("[INFO]  ............................................ 还原jar文件成功 > model_jar_backup"))
+                else:
+                    print(red("[INFO]  ............................................ 未发现该文件 %s" % (file)))
+                    raise Exception("[ERROR]  ............................................ 未发现该文件 %s" % (file))
 
     # 6）重启服务：cd /home/admin/bsweb/bin; sh bsappstart.sh start
     @runs_once
