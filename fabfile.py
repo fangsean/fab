@@ -81,13 +81,11 @@ def backup(**kwargs):
     execute(component.model_jar_backup_list),
 
     print(white('Release file: '))
-    while(True):
-        file = input("please input file from head list:")
-        if file ==None or file == '' or model not in file:
-            print(red('输入有误，文件名称不规范,重新输入...'))
-        else:
-            print(blue("您输入的文件名称是[%s]" % (file)))
-            break
+    file = input("please input file from head list:")
+    if file ==None or file == '' or model not in file:
+        exit(red('输入有误，文件名称不规范,重新输入...'))
+    else:
+        print(blue("您输入的文件名称是[%s]" % (file)))
 
     execute(component.model_jar_backup, file),
     execute(component.model_server_kill),
