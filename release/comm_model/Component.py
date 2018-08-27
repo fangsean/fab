@@ -65,7 +65,7 @@ class GitComponent(Component):
     @runs_once
     def model_branch_list(self):
         with lcd(self.path_local):
-            branchs = local('git branch -r')
+            branchs = local("git remote show origin | awk '{L[NR]=$1}END{for (i=6;i<=NR-4;i++){print L[i]}}'")
             return branchs
 
     # 代码更新合并
