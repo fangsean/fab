@@ -216,7 +216,7 @@ class BackUpComponent(Component):
         self.file = None
 
     @runs_once
-    def model_jar_backup_list(self):
+    def model_input_backup_file(self):
         print(white('Release file: '))
         while(True):
             file = input("please input file from head list:")
@@ -265,7 +265,7 @@ class BackUpComponent(Component):
     # 5）
     # 还原: cp -rf /home/admin/bsweb/target/back/bswebxxxxx.jar /home/admin/bsweb/target/bsweb.jar
     @runs_once
-    def model__input_file(self, file):
+    def model_jar_backup(self, file):
         if file == None or file == '':
             exit(red("备份文件错误，请检查！！"))
         print("[INFO]  ............................................ 还原jar文件 > model_jar_backup")

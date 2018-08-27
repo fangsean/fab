@@ -79,10 +79,10 @@ def backup(**kwargs):
     print("================================ START TASK ==============================")
     component = BackUpComponent(model)
     execute(component.model_jar_backup_list),
-    execute(component.model__input_file),
+    execute(component.model_input_backup_file),
     execute(component.model_jar_backup, component.file),
     execute(component.model_server_kill),
     execute(component.model_server_startup),
     execute(component.model_netstat),
     execute(component.model_end)
-    exit(blue("回退成功"))
+    # exit(blue("回退成功"))
