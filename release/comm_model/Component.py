@@ -158,7 +158,7 @@ class MainComponent(Component):
                     time.sleep(1)
                 # open_shell('jps | awk  \'{ if($(NF) == \"' + model + '.jar\"){print $(NF-1)}}\' |xargs  kill -9 ')
                 else:
-                    print(yellow("[INFO]  ............................................ 已经杀掉进程，没有发现服务 > model_kill"))
+                    print(blue("[INFO]  ............................................ 已经杀掉进程，没有发现服务 > model_kill"))
                     break
         except Exception as e:
             print(red(str(e)))
