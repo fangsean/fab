@@ -80,8 +80,8 @@
           <file leaf-file-name="fabfile.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/fabfile.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="294">
-                  <caret line="88" column="0" lean-forward="true" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
+                <state relative-caret-position="491">
+                  <caret line="94" column="22" lean-forward="true" selection-start-line="92" selection-start-column="37" selection-end-line="94" selection-end-column="22" />
                   <folding>
                     <element signature="e#23#33#0" expanded="true" />
                   </folding>
@@ -140,8 +140,8 @@
           <file leaf-file-name="config.ini" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/properties/config.ini">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="459">
-                  <caret line="41" column="22" lean-forward="true" selection-start-line="41" selection-start-column="22" selection-end-line="41" selection-end-column="22" />
+                <state relative-caret-position="378">
+                  <caret line="38" column="2" lean-forward="true" selection-start-line="38" selection-start-column="2" selection-end-line="38" selection-end-column="2" />
                   <folding />
                 </state>
               </provider>
@@ -848,14 +848,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/properties/config.ini">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="41" column="22" lean-forward="true" selection-start-line="41" selection-start-column="22" selection-end-line="41" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-49">
@@ -890,10 +882,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/properties/config.ini">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="38" column="2" lean-forward="true" selection-start-line="38" selection-start-column="2" selection-end-line="38" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/fabfile.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="88" column="0" lean-forward="true" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
+        <state relative-caret-position="491">
+          <caret line="94" column="22" lean-forward="true" selection-start-line="92" selection-start-column="37" selection-end-line="94" selection-end-column="22" />
           <folding>
             <element signature="e#23#33#0" expanded="true" />
           </folding>

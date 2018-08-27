@@ -92,3 +92,5 @@ def backup(**kwargs):
     execute(component.model_server_startup),
     execute(component.model_netstat),
     execute(component.model_end)
+    exit(blue("回退成功"))
+
