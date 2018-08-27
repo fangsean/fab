@@ -29,10 +29,3 @@ class Configer():
         except Exception as e:
             pass
         return params
-
-
-
-if __name__ == "__main__":
-    configer = Configer()
-    params = configer.get_params("path_local_target")
-    print(params)

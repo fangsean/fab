@@ -3,7 +3,7 @@ import sys
 
 from fabric.api import *
 from fabric.colors import *
-
+from release.comm_model.Component import CRYPT, __configer__
 from release.comm_model.Component import Component, MainComponent, GitComponent, BackUpComponent
 
 env.roledefs['main'] = ['Nq007', 'localhost']
@@ -86,3 +86,22 @@ def backup(**kwargs):
     execute(component.model_netstat),
     execute(component.model_end)
     # exit(blue("回退成功"))
+
+@task()
+@parallel
+def encrypt(**kwargs):
+    print(yellow("***encrypt 加密字符串密码***"))
+    if len(kwargs) < 1 or 'passwd' not in kwargs.keys():
+        print(yellow("\t请输入执行参数:"))
+        print(yellow("\t如 fab encrypt:passwd=***"))
+        print("Do")
+        sys.exit(0)
+
+    passwd = kwargs['passwd']
+    key = __configer__.get_params('Apps', 'domain')
+    password_crypt = CRYPT.encrypt_password(key, passwd)
+
+    print(yellow("\t\tinput passwd:%s" % (passwd)))
+    print(yellow("\t\tencrypt passwd:%s" % (password_crypt)))
+
+    exit(blue("================ END =================="))

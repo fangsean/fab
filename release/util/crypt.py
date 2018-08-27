@@ -56,6 +56,13 @@ class prpcrypt():
         d = pc.decrypt(passwd)
         return d.decode(prpcrypt.__final__code)
 
+    @staticmethod
+    def encrypt_password(key, passwd):
+        pc = prpcrypt(key)  # 初始化密钥
+        e = pc.encrypt(passwd)
+        return e.decode(prpcrypt.__final__code)
+
+
 # if __name__ == '__main__':
 #     pc = prpcrypt('nqtown')  # 初始化密钥
 #     e = pc.encrypt("nanquan@2017")
