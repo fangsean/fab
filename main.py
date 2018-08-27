@@ -2,8 +2,7 @@
 # !/usr/bin/env python3
 
 from fabric.api import *
-from setting import Configer
-from bsweb_model import demo_branch_list
+from release.setting import Configer
 
 __configer__ = Configer()
 systems = __configer__.get_params('servers')

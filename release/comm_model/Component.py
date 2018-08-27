@@ -8,7 +8,7 @@ from fabric.contrib.console import confirm
 
 from release.util.crypt import prpcrypt as CRYPT
 
-from setting import Configer
+from release.setting import Configer
 
 __configer__ = Configer()
 

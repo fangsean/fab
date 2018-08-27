@@ -1,8 +1,5 @@
 # -*- encoding: utf-8 -*-
-from typing import List
-from collections import OrderedDict
-from init import Singleton, Init
-from fabric.api import *
+from release.init import Init
 
 
 class Configer():
