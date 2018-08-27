@@ -265,7 +265,7 @@ class BackUpComponent(Component):
     # 5）
     # 还原: cp -rf /home/admin/bsweb/target/back/bswebxxxxx.jar /home/admin/bsweb/target/bsweb.jar
     @runs_once
-    def model_jar_backup(self, file):
+    def model__input_file(self, file):
         if file == None or file == '':
             exit(red("备份文件错误，请检查！！"))
         print("[INFO]  ............................................ 还原jar文件 > model_jar_backup")

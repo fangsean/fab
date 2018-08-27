@@ -4,7 +4,7 @@ import sys
 from fabric.api import *
 from fabric.colors import *
 
-from release.comm_model.Component import Component, MainComponent, GitComponent,BackUpComponent
+from release.comm_model.Component import Component, MainComponent, GitComponent, BackUpComponent
 
 env.roledefs['main'] = ['Nq007', 'localhost']
 env.roledefs['git'] = ['localhost']
@@ -79,18 +79,10 @@ def backup(**kwargs):
     print("================================ START TASK ==============================")
     component = BackUpComponent(model)
     execute(component.model_jar_backup_list),
-
-    print(white('Release file: '))
-    file = input("please input file from head list:")
-    if file ==None or file == '' or model not in file:
-        exit(red('输入有误，文件名称不规范,重新输入...'))
-    else:
-        print(blue("您输入的文件名称是[%s]" % (file)))
-
-    execute(component.model_jar_backup, file),
+    execute(component.model__input_file),
+    execute(component.model_jar_backup, component.file),
     execute(component.model_server_kill),
     execute(component.model_server_startup),
     execute(component.model_netstat),
     execute(component.model_end)
     exit(blue("回退成功"))
-
