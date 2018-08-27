@@ -126,7 +126,7 @@ class MainComponent(Component):
                          os.path.join(self.path_remote, 'target', 'temp', self.model) + Component.FILE_TYPE)
             if result.failed and not confirm("put file faild, Continue[Y/N]?"):
                 abort("Aborting file put task!")
-                print(red("[INFO]  ............................................ 远程发包失败 > model_jar_push"))
+                exit(red("[INFO]  ............................................ 远程发包失败 > model_jar_push"))
             else:
                 print(blue("[INFO]  ............................................ 远程发包成功 > model_jar_push"))
 
@@ -160,7 +160,7 @@ class MainComponent(Component):
                     print(blue("[INFO]  ............................................ 已经杀掉进程，没有发现服务 > model_kill"))
                     break
         except Exception as e:
-            print(red(str(e)))
+            exit(red(str(e)))
         print(blue("[INFO]  ............................................ 停止服务完毕 > model_kill"))
 
     # 5）
@@ -259,7 +259,7 @@ class BackUpComponent(Component):
                     print(blue("[INFO]  ............................................ 已经杀掉进程，没有发现服务 > model_kill"))
                     break
         except Exception as e:
-            print(red(str(e)))
+            exit(red(str(e)))
         print(blue("[INFO]  ............................................ 停止服务完毕 > model_kill"))
 
     # 5）
