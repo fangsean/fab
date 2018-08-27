@@ -19,7 +19,7 @@ def git(**kwargs):
         print(yellow("\t请输入执行参数:"))
         print(yellow("\t\tmodel:%s" % (Component.configer.get_params("servers"))))
         print(yellow("\t\tbranch:%s" % (Component.configer.get_params("branch"))))
-        print(yellow("\t如 fab go:model=bsweb,branch=developer"))
+        print(yellow("\t如 fab git:model=bsweb,branch=developer"))
         print("Do")
         sys.exit(0)
 
