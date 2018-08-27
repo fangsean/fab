@@ -173,7 +173,7 @@ class MainComponent(Component):
             with settings(warn_only=True):
                 if int(run(" [ -e '" + self.model + Component.FILE_TYPE + "' ] && echo 11 || echo 10")) == 11:
                     run(
-                        'cp -rf  ' + self.model + Component.FILE_TYPE + '  ./backup/' + self.model + Component.FILE_TYPE + '$(date +%Y%m%d.%H.%M.%S)')
+                        'cp -rf  ' + self.model + Component.FILE_TYPE + '  ./backup/' + self.model + Component.FILE_TYPE + '.$(date +%Y%m%d.%H.%M.%S)')
                 run('mv -f  ./temp/' + self.model + Component.FILE_TYPE + ' ./')
         print(blue("[INFO]  ............................................ 替换jar文件成功 > model_jar_prod"))
 
