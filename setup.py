@@ -11,7 +11,7 @@ install_requires = [
 ]
 setup(
     name='nq',
-    version='1.0',
+    version='2.0',
     author_email='jsen.yin@gmail.com',
     # packages=find_packages('release'),
     py_modules=['nq'],
