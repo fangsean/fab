@@ -33,6 +33,7 @@ def git(config, model, branch):
     local('fab git:model=%s,branch=%s' % (model, branch))
     click.echo("================================ END TASK ==============================")
 
+
 @main.command()
 @click.argument('model', default=None, type=str, required=False)
 @click.argument('deploy', default=None, type=str, required=False)
@@ -53,6 +54,7 @@ def go(config, model, deploy):
     env.hosts = config.get_params("server_hosts", model, deploy)
     local('fab go:model=%s,deploy=%s' % (model, deploy))
     click.echo("================================ END TASK ==============================")
+
 
 @main.command()
 @click.argument('model', default=None, type=str, required=False)
@@ -75,6 +77,7 @@ def backup(config, model, deploy):
     local('fab backup:model=%s,deploy=%s' % (model, deploy))
     click.echo("================================ END TASK ==============================")
 
+
 @main.command()
 @click.argument('passwd', default=None, required=True, type=str)
 @pass_config
@@ -93,8 +96,8 @@ def encrypt(config, passwd):
 
 
 @main.command()
-@click.argument('model', default=None, type=str, required=True)
-@click.argument('deploy', default=None, type=str, required=True)
+@click.option('--model', default=None, help='项目服务名.', type=str, required=True)
+@click.option('--deploy', default=None, help="环境", type=str, required=True)
 @pass_config
 @task
 def test(config, model, deploy):
@@ -102,9 +105,6 @@ def test(config, model, deploy):
 
     click.echo(yellow("***test 测试***"))
     # click.clear()
-    click.echo(model)
-    click.echo(deploy)
-    click.echo(config.get_params("server_hosts", model, deploy))
     env.hosts = config.get_params("server_hosts", model, deploy)
 
     local('fab test:model=%s,deploy=%s' % (model, deploy))
