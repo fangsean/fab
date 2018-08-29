@@ -1,12 +1,10 @@
 # -*- encoding: utf-8 -*-
-from release import ROOT_PATH
-from release.init import Init, Singleton
 import json
-import os
-import pickle
-import click
+
 from fabric.colors import *
 
+from release import ROOT_PATH
+from release.init import Init
 from release.util.fileUtil import file_name
 
 
