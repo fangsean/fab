@@ -113,19 +113,10 @@ def backup(config, **kwargs):
 @task()
 @parallel
 @comm_config
-def encrypt(config, **kwargs):
+def test(config, model, deploy):
     ''' 加密字符串密码 '''
 
-    print(yellow("***encrypt 加密字符串密码***"))
-    if len(kwargs) < 1 or 'passwd' not in kwargs.keys():
-        print(yellow("\t请输入执行参数:"))
-        print(yellow("\t如 fab encrypt:passwd=***"))
-        print("Break")
-        sys.exit(0)
-
-    passwd = kwargs['passwd']
-    key = config.get_params('Apps', 'domain')
-    password_crypt = CRYPT.encrypt_password(key, passwd)
+    print(yellow("***test 测试***"))
 
     print(yellow("\t\tinput passwd:%s" % (passwd)))
     print(yellow("\t\tencrypt passwd:%s" % (password_crypt)))
