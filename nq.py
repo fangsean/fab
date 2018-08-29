@@ -14,8 +14,8 @@ def main():
 
 
 @main.command()
-@click.argument('model', default=None, type=str, required=False)
-@click.argument('branch', default=None, type=str, required=False)
+@click.option('--model', default=None, help='项目服务名.', type=str, required=False)
+@click.option('--branch', default=None, help="分支名称", type=str, required=False)
 @pass_config
 def git(config, model, branch):
     ''' 执行代码更新任务 '''
@@ -27,7 +27,7 @@ def git(config, model, branch):
         click.echo(magenta(list(config.get_params("servers").keys())))
         click.echo(red("\t请输入[branch]参数:"))
         click.echo(magenta(list(config.get_params("deploy").keys())))
-        click.echo(yellow("\t如 git  mode:bsweb branch:developer"))
+        click.echo(yellow("\t如 git  --model bsweb --branch developer"))
         sys.exit(red("================ Break =================="))
 
     local('fab git:model=%s,branch=%s' % (model, branch))
@@ -35,8 +35,8 @@ def git(config, model, branch):
 
 
 @main.command()
-@click.argument('model', default=None, type=str, required=False)
-@click.argument('deploy', default=None, type=str, required=False)
+@click.option('--model', default=None, help='项目服务名.', type=str, required=False)
+@click.option('--deploy', default=None, help="版本环境", type=str, required=False)
 @pass_config
 def go(config, model, deploy):
     ''' 执行发布任务 '''
@@ -48,7 +48,7 @@ def go(config, model, deploy):
         click.echo(magenta(list(config.get_params("servers").keys())))
         click.echo(red("\t请输入[deploy]参数:"))
         click.echo(magenta(list(config.get_params("deploy").keys())))
-        click.echo(yellow("\t如 go  mode:bsweb deploy:pre "))
+        click.echo(yellow("\t如 go  --model bsweb --deploy pre "))
         sys.exit(red("================ Break =================="))
 
     env.hosts = config.get_params("server_hosts", model, deploy)
@@ -58,7 +58,7 @@ def go(config, model, deploy):
 
 @main.command()
 @click.option('--model', default=None, help='项目服务名.', type=str, required=False)
-@click.option('--deploy', default=None, help="环境", type=str, required=False)
+@click.option('--deploy', default=None, help="版本环境", type=str, required=False)
 @pass_config
 def backup(config, model, deploy):
     ''' 执行回退任务 '''
