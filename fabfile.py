@@ -1,106 +1,139 @@
 # -*- coding:utf-8 -*-
-import sys
-
+from fabric.contrib.console import confirm
 from fabric.api import *
 from fabric.colors import *
 
+import sys
 import click
 
+from fabric.api import *
+from fabric.colors import *
+from release.comm_model.Component import CRYPT
+from release.comm_model.Component import Component, MainComponent, GitComponent, BackUpComponent
 
-@click.command()
-@click.option('--model', help='项目服务名.', type=str)
-@click.option('--branch', help='分支.', type=str)
-@task(name="git")
+from release.setting import Configer
+
+comm_config = click.make_pass_decorator(Configer, ensure=True)
+# env.user = user
+# env.password = password
+# env.hosts = hosts1
+
+env.roledefs['main'] = ['Nq007', 'localhost']
+env.roledefs['git'] = ['localhost']
+
+
+@roles('git')
+@task()
 @parallel
-def git(**kwargs):
+@comm_config
+def git(config, **kwargs):
     ''' 执行代码更新任务 '''
 
     print("***git 执行代码更新任务***")
     if len(kwargs) < 2 or 'model' not in kwargs.keys() or 'branch' not in kwargs.keys():
         print(red("\t参数缺失！"))
         print(yellow("\t请输入执行参数:"))
+        print(yellow("\t\tmodel:%s" % (config.get_params("servers"))))
+        print(yellow("\t\tbranch:%s" % (config.get_params("branch"))))
         print(yellow("\t如 fab git:model=bsweb,branch=developer"))
-        print("Do")
+        print("Break")
         sys.exit(0)
 
     model = kwargs['model']
     branch = kwargs['branch']
     print("================================ START TASK ==============================")
+    component = GitComponent(config, model, branch)
+    execute(component.model_mvn_clone),
+    execute(component.model_branch_list),
+    execute(component.model_merge),
+    execute(component.model_pull),
+    execute(component.model_end)
 
 
-@task(name="go")
+@roles('main')
+@task()
 @parallel
-def go(**kwargs):
+@comm_config
+def go(config, **kwargs):
     ''' 执行发布任务 '''
 
     print("***go 执行发布任务***")
     if len(kwargs) < 2 or 'model' not in kwargs.keys() or 'deploy' not in kwargs.keys():
         print(red("\t参数缺失！"))
         print(yellow("\t请输入执行参数:"))
+        print(yellow("\t\tmodel:%s" % (config.get_params("servers"))))
+        print(yellow("\t\tdeploy:%s" % (config.get_params("deploy"))))
         print(yellow("\t如 fab go:model=bsweb,deploy=pre"))
-        print("Do")
+        print("Break")
         sys.exit(0)
 
     model = kwargs['model']
     deploy = kwargs['deploy']
     print("================================ START TASK ==============================")
+    component = MainComponent(config, model, deploy)
+    execute(component.model_mvn_package),
+    execute(component.model_jar_push),
+    execute(component.model_server_kill),
+    execute(component.model_jar_upgraded),
+    execute(component.model_server_startup),
+    execute(component.model_netstat),
+    execute(component.model_end)
 
 
 @roles('main')
-@task(name="back")
+@task()
 @parallel
-def backup(**kwargs):
+@comm_config
+def backup(config, **kwargs):
     ''' 执行回退任务 '''
 
     print(yellow("***backup 执行回退任务***"))
     if len(kwargs) < 1 or 'model' not in kwargs.keys():
         print(red("\t参数缺失！"))
         print(yellow("\t请输入执行参数:"))
+        print(yellow("\t\tmodel:%s" % (config.get_params("servers"))))
+        print(yellow("\t\tdeploy:%s" % (config.get_params("deploy"))))
+        print(yellow("\t如 fab backup:model=bsweb,deploy=pre"))
+        print("Break")
+        sys.exit(0)
 
     model = kwargs['model']
     print("================================ START TASK ==============================")
+    component = BackUpComponent(config, model)
+    execute(component.model_jar_backup_list),
+    execute(component.model_input_backup_file),
+    execute(component.model_jar_backup, component.file),
+    execute(component.model_server_kill),
+    execute(component.model_server_startup),
+    execute(component.model_netstat),
+    execute(component.model_end)
+    # exit(blue("回退成功"))
 
-@click.command()
-@click.option('--name', prompt='%s \r\nname of model：' % (__configer__.get_params("servers")),
-              help='name of model.', type=str)
-@task(name="encrypt")
+
+@task()
 @parallel
-def encrypt(**kwargs):
+@comm_config
+def encrypt(config, **kwargs):
     ''' 加密字符串密码 '''
 
     print(yellow("***encrypt 加密字符串密码***"))
     if len(kwargs) < 1 or 'passwd' not in kwargs.keys():
         print(yellow("\t请输入执行参数:"))
         print(yellow("\t如 fab encrypt:passwd=***"))
-        print("Do")
+        print("Break")
         sys.exit(0)
 
     passwd = kwargs['passwd']
+    key = config.get_params('Apps', 'domain')
+    password_crypt = CRYPT.encrypt_password(key, passwd)
+
+    print(yellow("\t\tinput passwd:%s" % (passwd)))
+    print(yellow("\t\tencrypt passwd:%s" % (password_crypt)))
 
     sys.exit(blue("================ END =================="))
 
 
-@click.command()
-@click.option('--name', prompt='%s \r\nname of model：' % (__configer__.get_params("servers")),
-              help='name of model.')
 @task()
 @parallel
-def help(name):
+def help(**args):
     ''' 帮助 '''
-    click.echo('[%s, %s, %s, %s ]' % ('git', 'go', 'backup', 'encrypt'))
-    click.echo('Hello %s!!!' % name)
-
-
-@click.group()
-def cli():
-    pass
-
-
-cli.add_command(help)
-cli.add_command(encrypt)
-cli.add_command(backup)
-cli.add_command(go)
-cli.add_command(git)
-
-if __name__ == '__main__':
-    help()

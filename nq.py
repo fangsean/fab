@@ -96,6 +96,10 @@ def encrypt(config, passwd):
     sys.exit(blue("================ END =================="))
 
 
+main.add_command(encrypt)
+main.add_command(backup)
+main.add_command(go)
+main.add_command(git)
 # @main.command()
 # @click.option('--string-to-print', default='world', help='The subject of the greeting.')
 # @click.option('--repeat', default=1, type=int, help='How many times you should be greeted.')
