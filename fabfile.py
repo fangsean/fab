@@ -53,6 +53,7 @@ def git(model,branch):
 
     print("================================ START TASK ==============================")
     component = GitComponent(model, branch)
+    execute(component.model_dir_check),
     execute(component.model_mvn_clone),
     execute(component.model_branch_list),
     execute(component.model_merge),

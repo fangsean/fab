@@ -54,6 +54,11 @@ class GitComponent(Component):
         self.path_git = self.__finnal_configer__.get_params("path_git", model)
         self.root = self.__finnal_configer__.get_params("path_local", "root")
 
+    @runs_once
+    def model_dir_check(self):
+        if int(run(" [ -e '" + self.root + "' ] && echo 11 || echo 10")) != 11:
+                local("mkdir -p %s" % (self.root))
+
     # 代码克隆
     @runs_once
     def model_mvn_clone(self):
