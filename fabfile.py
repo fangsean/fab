@@ -89,7 +89,6 @@ def go(model, deploy):
     sys.exit(0)
 
 
-@roles('main')
 @task()
 @parallel
 def backup(model, deploy):
