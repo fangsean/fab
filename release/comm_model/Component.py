@@ -26,11 +26,6 @@ class Component(object):
         # [Apps] domain
         self.DEFAULT_DOMAIN = self.__finnal_configer__.get_params('Apps', 'domain')
 
-        env.user = self.__finnal_configer__.get_params('Account', 'user')
-        password = CRYPT.get_password(self.DEFAULT_DOMAIN, self.__finnal_configer__.get_params('Account', 'password'))
-        env.password = password
-        env.hosts = self.__finnal_configer__.get_params('server_hosts', self.model)
-
     # 发布成功
     @runs_once
     def model_end(self):
@@ -99,6 +94,10 @@ class MainComponent(Component):
             self.deploy = deploy
         self.path_local_target = self.__finnal_configer__.get_params("path_local_target", model)
         self.path_remote = self.__finnal_configer__.get_params("path_remote", model)
+        env.user = self.__finnal_configer__.get_params('Account', 'user')
+        password = CRYPT.get_password(self.DEFAULT_DOMAIN, self.__finnal_configer__.get_params('Account', 'password'))
+        env.password = password
+        env.hosts = self.__finnal_configer__.get_params('server_hosts', self.model, self.deploy)
 
     # 2）打包：start /root/work/nq_basicservice/deploy/basicservice-mvn-build-prod.bat
     @runs_once
@@ -200,6 +199,10 @@ class BackUpComponent(Component):
         if deploy != None and deploy != '':
             self.deploy = deploy
         self.path_remote = self.__finnal_configer__.get_params("path_remote", model)
+        env.user = self.__finnal_configer__.get_params('Account', 'user')
+        password = CRYPT.get_password(self.DEFAULT_DOMAIN, self.__finnal_configer__.get_params('Account', 'password'))
+        env.password = password
+        env.hosts = self.__finnal_configer__.get_params('server_hosts', self.model, self.deploy)
         self.file = None
 
     @runs_once

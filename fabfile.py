@@ -98,8 +98,9 @@ def backup(config, **kwargs):
         sys.exit(0)
 
     model = kwargs['model']
+    deploy = kwargs['deploy']
     print("================================ START TASK ==============================")
-    component = BackUpComponent(config, model)
+    component = BackUpComponent(config, model, deploy)
     execute(component.model_jar_backup_list),
     execute(component.model_input_backup_file),
     execute(component.model_jar_backup, component.file),
@@ -118,8 +119,9 @@ def test(config, model, deploy):
 
     print(yellow("***test 测试***"))
 
-    print(yellow("\t\tinput passwd:%s" % (passwd)))
-    print(yellow("\t\tencrypt passwd:%s" % (password_crypt)))
+    component = BackUpComponent(config, model, deploy)
+    execute(component.model_netstat),
+    execute(component.model_end)
 
     sys.exit(blue("================ END =================="))
 
