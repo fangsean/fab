@@ -232,15 +232,20 @@ class BackUpComponent(Component):
     # @runs_once
     def model_jar_backup_list(self):
         print("[INFO]  ............................................ 还原jar文件 > model_jar_backup")
-        with cd(os.path.join(self.path_remote, 'target', 'backup')):
-            with settings(warn_only=True):
-                result = run('ls  -l ' + os.path.join(self.path_remote, 'target',
-                                                      'backup') + ' ' + self.model + Component.FILE_TYPE + '*')
-                if "No such file or directory" in result:
-                    print(yellow("[WARN]  ............................................ 未发现备份文件"))
-                    sys.exit()
-                else:
-                    return result
+        try:
+            with cd(os.path.join(self.path_remote, 'target', 'backup')):
+                with settings(warn_only=True):
+                    result = run('ls  -l ' + os.path.join(self.path_remote, 'target',
+                                                          'backup') + ' ' + self.model + Component.FILE_TYPE + '*')
+                    if "No such file or directory" in result:
+                        print(red("[ERROR]  ............................................ 未发现备份文件"))
+                        sys.exit()
+                    else:
+                        return result
+        except Exception as e:
+            print(red(str(e)))
+            sys.exit()
+
 
     # 4）停止服务 jps | awk  '{ if($(NF) == "scmweb.jar"){print $(NF-1)}}' |xargs  kill -9
     # @runs_once
