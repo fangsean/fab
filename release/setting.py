@@ -20,13 +20,15 @@ class Configer(object):
         self.__init__ = Init()
         self.__config_params__ = self.__init__.get_params()
         files = file_name(ROOT_PATH, '.json')
+        print("path:"+ROOT_PATH)
+        print("file:"+list(files))
         for file in files:
             if os.path.getsize(file) > 0:
                 name = os.path.basename(file)
                 index = name.rfind('.')
                 name = name[:index]
                 with open(file, 'rb') as f:
-                    print("json:%s" % (json.loads(f.read())))
+                    pass
                     # self.__config_params__[name] = json.loads(f.read())
 
         # self.__config_params__["server_hosts"] = {
