@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="748dc003-3f74-48fe-ab9d-000ee6a76a5f" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/fabfile.py" afterPath="$PROJECT_DIR$/fabfile.py" />
       <change beforePath="$PROJECT_DIR$/nq.py" afterPath="$PROJECT_DIR$/nq.py" />
-      <change beforePath="$PROJECT_DIR$/release/setting.py" afterPath="$PROJECT_DIR$/release/setting.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -62,21 +60,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="setting.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="setting.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/release/setting.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="7" column="27" lean-forward="false" selection-start-line="7" selection-start-column="27" selection-end-line="7" selection-end-column="27" />
-              <folding />
+            <state relative-caret-position="183">
+              <caret line="37" column="8" lean-forward="false" selection-start-line="37" selection-start-column="8" selection-end-line="37" selection-end-column="8" />
+              <folding>
+                <element signature="e#26#55#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="nq.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="nq.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nq.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="7" column="62" lean-forward="true" selection-start-line="7" selection-start-column="62" selection-end-line="7" selection-end-column="62" />
+            <state relative-caret-position="378">
+              <caret line="110" column="43" lean-forward="false" selection-start-line="110" selection-start-column="43" selection-end-line="110" selection-end-column="43" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -234,8 +234,8 @@
         <option value="$PROJECT_DIR$/release/comm_model/Component.py" />
         <option value="$PROJECT_DIR$/config.ini" />
         <option value="$PROJECT_DIR$/fabfile.py" />
-        <option value="$PROJECT_DIR$/nq.py" />
         <option value="$PROJECT_DIR$/release/setting.py" />
+        <option value="$PROJECT_DIR$/nq.py" />
       </list>
     </option>
   </component>
@@ -860,21 +860,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/nq.py">
+    <entry file="file://$PROJECT_DIR$/release/setting.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="7" column="62" lean-forward="true" selection-start-line="7" selection-start-column="62" selection-end-line="7" selection-end-column="62" />
+        <state relative-caret-position="183">
+          <caret line="37" column="8" lean-forward="false" selection-start-line="37" selection-start-column="8" selection-end-line="37" selection-end-column="8" />
           <folding>
-            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#26#55#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/release/setting.py">
+    <entry file="file://$PROJECT_DIR$/nq.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="7" column="27" lean-forward="false" selection-start-line="7" selection-start-column="27" selection-end-line="7" selection-end-column="27" />
-          <folding />
+        <state relative-caret-position="378">
+          <caret line="110" column="43" lean-forward="false" selection-start-line="110" selection-start-column="43" selection-end-line="110" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
