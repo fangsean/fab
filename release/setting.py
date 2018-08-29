@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 from release import ROOT_PATH
-from release.init import Init
+from release.init import Init, Singleton
 import json
 import os
 import pickle
@@ -10,7 +10,7 @@ from fabric.colors import *
 from release.util.fileUtil import file_name
 
 
-class Configer():
+class Configer(Singleton):
 
     def __init__(self):
         self.__init__ = Init()
