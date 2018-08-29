@@ -49,7 +49,7 @@ class GitComponent(Component):
     DEFAULT_BRANCH = None
 
     def __init__(self, model, branch):
-        super().__init__(config, model)
+        super().__init__(model)
         self.branch = branch
         self.path_git = self.__finnal_configer__.get_params("path_git", model)
         self.root = self.__finnal_configer__.get_params("path_local", "root")
@@ -92,7 +92,7 @@ class MainComponent(Component):
     DEFAULT_DEPLOY = 'prod'
 
     def __init__(self, model, deploy):
-        super().__init__(config, model)
+        super().__init__(model)
         if deploy != None and deploy != '':
             self.deploy = deploy
         self.path_local_target = self.__finnal_configer__.get_params("path_local_target", model)
@@ -198,7 +198,7 @@ class BackUpComponent(Component):
     DEFAULT_DEPLOY = 'prod'
 
     def __init__(self, model, deploy):
-        super().__init__(config, model)
+        super().__init__(model)
         if deploy != None and deploy != '':
             self.deploy = deploy
         self.path_remote = self.__finnal_configer__.get_params("path_remote", model)
