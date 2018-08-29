@@ -21,14 +21,21 @@ def git(config, model, branch):
     ''' 执行代码更新任务 '''
 
     click.echo("***git 执行代码更新任务***")
+    models = list(config.get_params("servers").keys())
+    deploys = list(config.get_params("branch").keys())
     if model == None or branch == None:
         click.echo(red("\t参数缺失！"))
         click.echo(red("\t请输入[model]参数："))
-        click.echo(magenta(list(config.get_params("servers").keys())))
+        click.echo(magenta(models))
         click.echo(red("\t请输入[branch]参数:"))
-        click.echo(magenta(list(config.get_params("deploy").keys())))
+        click.echo(magenta(deploys))
         click.echo(yellow("\t如 git  --model bsweb --branch developer"))
         sys.exit(red("================ Break =================="))
+    if model not in models:
+        click.echo(red("\t参数错误！"))
+        click.echo(red("\t请输入[model]参数："))
+        click.echo(magenta(models))
+        sys.exit(red("================ Stop =================="))
 
     local('fab git:model=%s,branch=%s' % (model, branch))
     click.echo("================================ END TASK ==============================")
@@ -42,6 +49,9 @@ def go(config, model, deploy):
     ''' 执行发布任务 '''
 
     click.echo(yellow("***go 执行发布任务***"))
+    models = list(config.get_params("servers").keys())
+    deploys = list(config.get_params("deploy").keys())
+
     if model == None or deploy == None:
         click.echo(red("\t参数缺失！"))
         click.echo(red("\t请输入[model]参数："))
@@ -49,6 +59,14 @@ def go(config, model, deploy):
         click.echo(red("\t请输入[deploy]参数:"))
         click.echo(magenta(list(config.get_params("deploy").keys())))
         click.echo(yellow("\t如 go  --model bsweb --deploy pre "))
+        sys.exit(red("================ Break =================="))
+
+    if model not in models and deploy not in deploys:
+        click.echo(red("\t参数错误！"))
+        click.echo(red("\t请输入[model]参数："))
+        click.echo(magenta(list(config.get_params("servers").keys())))
+        click.echo(red("\t请输入[deploy]参数:"))
+        click.echo(magenta(list(config.get_params("deploy").keys())))
         sys.exit(red("================ Break =================="))
 
     env.hosts = config.get_params("server_hosts", model, deploy)
@@ -64,6 +82,9 @@ def backup(config, model, deploy):
     ''' 执行回退任务 '''
 
     click.echo(yellow("***backup 执行回退任务***"))
+    models = list(config.get_params("servers").keys())
+    deploys = list(config.get_params("deploy").keys())
+
     if model == None or deploy == None:
         click.echo(red("\t参数缺失！"))
         click.echo(red("\t请输入[model]参数："))
@@ -71,6 +92,14 @@ def backup(config, model, deploy):
         click.echo(red("\t请输入[deploy]参数:"))
         click.echo(magenta(list(config.get_params("deploy").keys())))
         click.echo(yellow("\t如 backup  --mode bsweb --deploy pre "))
+        sys.exit(red("================ Break =================="))
+
+    if model not in models and deploy not in deploys:
+        click.echo(red("\t参数错误！"))
+        click.echo(red("\t请输入[model]参数："))
+        click.echo(magenta(list(config.get_params("servers").keys())))
+        click.echo(red("\t请输入[deploy]参数:"))
+        click.echo(magenta(list(config.get_params("deploy").keys())))
         sys.exit(red("================ Break =================="))
 
     env.hosts = config.get_params("server_hosts", model, deploy)
