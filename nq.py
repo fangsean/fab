@@ -31,8 +31,7 @@ def git(config, model, branch):
         sys.exit(red("================ Break =================="))
 
     local('fab git:model=%s,branch=%s' % (model, branch))
-    click.echo("================================ START TASK ==============================")
-
+    click.echo("================================ END TASK ==============================")
 
 @main.command()
 @click.argument('model', default=None, type=str, required=False)
@@ -53,8 +52,7 @@ def go(config, model, deploy):
 
     env.hosts = config.get_params("server_hosts", model, deploy)
     local('fab go:model=%s,deploy=%s' % (model, deploy))
-    click.echo("================================ START TASK ==============================")
-
+    click.echo("================================ END TASK ==============================")
 
 @main.command()
 @click.argument('model', default=None, type=str, required=False)
@@ -75,8 +73,7 @@ def backup(config, model, deploy):
 
     env.hosts = config.get_params("server_hosts", model, deploy)
     local('fab backup:model=%s,deploy=%s' % (model, deploy))
-    click.echo("================================ START TASK ==============================")
-
+    click.echo("================================ END TASK ==============================")
 
 @main.command()
 @click.argument('passwd', default=None, required=True, type=str)
@@ -105,9 +102,9 @@ def test(config, model, deploy):
 
     click.echo(yellow("***test 测试***"))
     # click.clear()
-    print(model)
-    print(deploy)
-    print(config.get_params("server_hosts", model, deploy))
+    click.echo(model)
+    click.echo(deploy)
+    click.echo(config.get_params("server_hosts", model, deploy))
     env.hosts = config.get_params("server_hosts", model, deploy)
 
     local('fab test:model=%s,deploy=%s' % (model, deploy))
