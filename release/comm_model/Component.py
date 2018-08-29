@@ -57,7 +57,7 @@ class GitComponent(Component):
     @runs_once
     def model_dir_check(self):
         if int(run(" [ -e '" + self.root + "' ] && echo 11 || echo 10")) != 11:
-                local("mkdir -p %s" % (self.root))
+            local("mkdir -p %s" % (self.root))
 
     # 代码克隆
     @runs_once
@@ -126,7 +126,8 @@ class MainComponent(Component):
                          os.path.join(self.path_remote, 'target', 'temp', self.model) + Component.FILE_TYPE)
             if result.failed and not confirm("put file faild, Continue[Y/N]?"):
                 abort("Aborting file put task!")
-                sys.exit(red("[INFO]  ............................................ 远程发包失败 > model_jar_push"))
+                print(red("[INFO]  ............................................ 远程发包失败 > model_jar_push"))
+                sys.exit()
             else:
                 print(blue("[INFO]  ............................................ 远程发包成功 > model_jar_push"))
 
@@ -160,7 +161,8 @@ class MainComponent(Component):
                     print(blue("[INFO]  ............................................ 已经杀掉进程，没有发现服务 > model_kill"))
                     break
         except Exception as e:
-            sys.exit(red(str(e)))
+            print(red(str(e)))
+            sys.exit()
         print(blue("[INFO]  ............................................ 停止服务完毕 > model_kill"))
 
     # 5）
@@ -235,7 +237,8 @@ class BackUpComponent(Component):
                 result = run('ls  -l ' + os.path.join(self.path_remote, 'target',
                                                       'backup') + ' ' + self.model + Component.FILE_TYPE + '*')
                 if "No such file or directory" in result:
-                    sys.exit(yellow("[WARN]  ............................................ 未发现备份文件"))
+                    print(yellow("[WARN]  ............................................ 未发现备份文件"))
+                    sys.exit()
                 else:
                     return result
 
@@ -257,7 +260,8 @@ class BackUpComponent(Component):
                     print(blue("[INFO]  ............................................ 已经杀掉进程，没有发现服务 > model_kill"))
                     break
         except Exception as e:
-            sys.exit(red(str(e)))
+            print(red(str(e)))
+            sys.exit()
         print(blue("[INFO]  ............................................ 停止服务完毕 > model_kill"))
 
     # 5）
@@ -265,7 +269,8 @@ class BackUpComponent(Component):
     # @runs_once
     def model_jar_backup(self, file):
         if file == None or file == '':
-            sys.exit(red("备份文件错误，请检查！！"))
+            print(red("备份文件错误，请检查！！"))
+            sys.exit()
         print("[INFO]  ............................................ 还原jar文件 > model_jar_backup")
         with cd(os.path.join(self.path_remote, 'target', 'backup')):
             run("pwd")
@@ -279,7 +284,8 @@ class BackUpComponent(Component):
                         self.path_remote, 'target'))
                     print(blue("[INFO]  ............................................ 还原jar文件成功 > model_jar_backup"))
                 else:
-                    sys.exit(red("[INFO]  ............................................ 未发现该文件 %s" % (file)))
+                    print(red("[INFO]  ............................................ 未发现该文件 %s" % (file)))
+                    sys.exit()
 
     # 6）重启服务：cd /home/admin/bsweb/bin; sh bsappstart.sh start
     # @runs_once
