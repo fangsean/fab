@@ -108,7 +108,7 @@ def test(config, model, deploy):
     # click.clear()
     print(model)
     print(deploy)
-    print(config.get_params(model, deploy))
+    print(config.get_params("server_hosts",model, deploy))
 
     sys.exit(blue("================ END =================="))
 
