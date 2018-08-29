@@ -26,7 +26,7 @@ class Configer(object):
                 index = name.rfind('.')
                 name = name[:index]
                 with open(file, 'rb') as f:
-                    print(json.loads(f.read()))
+                    print("json:%s" % (json.loads(f.read())))
                     # self.__config_params__[name] = json.loads(f.read())
 
         # self.__config_params__["server_hosts"] = {
