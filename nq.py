@@ -97,8 +97,8 @@ def encrypt(config, passwd):
 
 
 @main.command()
-@click.argument('model', default=None, type=str, required=False)
-@click.argument('deploy', default=None, type=str, required=False)
+@click.argument('model', default=None, type=str, required=True)
+@click.argument('deploy', default=None, type=str, required=True)
 @pass_config
 @task
 def test(config, model, deploy):

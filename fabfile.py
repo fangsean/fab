@@ -113,12 +113,10 @@ def backup(config, **kwargs):
 
 @task()
 @parallel
-@pass_config
-def test(config, model, deploy):
+def test(model, deploy):
     ''' 测试 '''
-
     print(yellow("***test 测试***"))
-
+    config = comm_config
     component = BackUpComponent(config, model, deploy)
     execute(component.model_netstat),
     execute(component.model_end)
