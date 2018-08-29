@@ -93,11 +93,11 @@ def go(**kwargs):
 @roles('main')
 @task()
 @parallel
-def backup(**kwargs):
+def backup(model, deploy):
     ''' 执行回退任务 '''
 
     print(yellow("***backup 执行回退任务***"))
-    if len(kwargs) < 1 or 'model' not in kwargs.keys():
+    if model == '' or deploy == '':
         print(red("\t参数缺失！"))
         print(yellow("\t请输入执行参数:"))
         print(yellow("\t\tmodel:%s" % (__configer.get_params("servers"))))
@@ -106,8 +106,6 @@ def backup(**kwargs):
         print("Break")
         sys.exit(0)
 
-    model = kwargs['model']
-    deploy = kwargs['deploy']
     print("================================ START TASK ==============================")
     component = BackUpComponent(model, deploy)
     execute(component.model_jar_backup_list),
@@ -127,10 +125,10 @@ def test(model, deploy):
     print(yellow("***test 测试***"))
     config = comm_config
     component = BackUpComponent(model, deploy)
-    execute(component.model_netstat),
+    # execute(component.model_netstat),
     execute(component.model_end)
 
-    sys.exit(blue("================ END =================="))
+    sys.exit(0)
 
 
 @task()
