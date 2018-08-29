@@ -17,7 +17,7 @@ def main():
 @click.argument('model', default=None, type=str, required=False)
 @click.argument('branch', default=None, type=str, required=False)
 @pass_config
-def git(config,model,branch):
+def git(config, model, branch):
     ''' 执行代码更新任务 '''
 
     click.echo("***git 执行代码更新任务***")
@@ -39,7 +39,7 @@ def git(config,model,branch):
 @click.argument('model', default=None, type=str, required=False)
 @click.argument('deploy', default=None, type=str, required=False)
 @pass_config
-def go(config,model,deploy):
+def go(config, model, deploy):
     ''' 执行发布任务 '''
 
     click.echo(yellow("***go 执行发布任务***"))
@@ -61,13 +61,13 @@ def go(config,model,deploy):
 @click.argument('model', default=None, type=str, required=False)
 @click.argument('deploy', default=None, type=str, required=False)
 @pass_config
-def backup(config,model,deploy):
+def backup(config, model, deploy):
     ''' 执行回退任务 '''
 
     click.echo(yellow("***backup 执行回退任务***"))
-    if model == None or deploy == None :
+    if model == None or deploy == None:
         click.echo(red("\t参数缺失！"))
-        click.echo(red("\t请输入[model]参数：" ))
+        click.echo(red("\t请输入[model]参数："))
         click.echo(magenta(list(config.get_params("servers").keys())))
         click.echo(red("\t请输入[deploy]参数:"))
         click.echo(magenta(list(config.get_params("deploy").keys())))
@@ -80,7 +80,7 @@ def backup(config,model,deploy):
 
 
 @main.command()
-@click.argument('passwd', default=None, required=True,type=str)
+@click.argument('passwd', default=None, required=True, type=str)
 @pass_config
 @task
 def encrypt(config, passwd):
@@ -92,6 +92,21 @@ def encrypt(config, passwd):
     password_crypt = CRYPT.encrypt_password(key, passwd)
     click.echo(yellow("\tinput passwd:%s" % (passwd)))
     click.echo(yellow("\tencrypt passwd:%s" % (password_crypt)))
+
+    sys.exit(blue("================ END =================="))
+
+
+@main.command()
+@click.argument('model', default=None, type=str, required=False)
+@click.argument('deploy', default=None, type=str, required=False)
+@pass_config
+@task
+def test(config, model, deploy):
+    ''' 测试 '''
+
+    click.echo(yellow("***test 测试***"))
+    # click.clear()
+    config.get_params(model,deploy)
 
     sys.exit(blue("================ END =================="))
 

@@ -115,7 +115,7 @@ def backup(config, **kwargs):
 @parallel
 @comm_config
 def test(config, model, deploy):
-    ''' 加密字符串密码 '''
+    ''' 测试 '''
 
     print(yellow("***test 测试***"))
 

@@ -4,6 +4,8 @@ from release.init import Init
 import json
 import os
 import pickle
+import click
+from fabric.colors import *
 
 from release.util.fileUtil import file_name
 
@@ -29,6 +31,9 @@ class Configer():
             }
             for server, deploy in self.__config_params__["server_hosts"].items()
         }
+
+        click.echo(blue("++++++++===========加载完成=================+++++++++"))
+
 
     def get_params(self, key, *args, **kwargs):
         if len(args) == 0 and len(kwargs) == 0:
