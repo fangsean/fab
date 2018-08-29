@@ -57,8 +57,8 @@ def go(config, model, deploy):
 
 
 @main.command()
-@click.argument('model', default=None, type=str, required=False)
-@click.argument('deploy', default=None, type=str, required=False)
+@click.option('--model', default=None, help='项目服务名.', type=str, required=False)
+@click.option('--deploy', default=None, help="环境", type=str, required=False)
 @pass_config
 def backup(config, model, deploy):
     ''' 执行回退任务 '''
@@ -70,7 +70,7 @@ def backup(config, model, deploy):
         click.echo(magenta(list(config.get_params("servers").keys())))
         click.echo(red("\t请输入[deploy]参数:"))
         click.echo(magenta(list(config.get_params("deploy").keys())))
-        click.echo(yellow("\t如 backup  mode:bsweb deploy:pre "))
+        click.echo(yellow("\t如 backup  --mode bsweb --deploy pre "))
         sys.exit(red("================ Break =================="))
 
     env.hosts = config.get_params("server_hosts", model, deploy)
