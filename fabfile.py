@@ -5,7 +5,7 @@ from fabric.colors import *
 
 import sys
 import click
-
+from io import StringIO
 from fabric.api import *
 from fabric.colors import *
 
@@ -22,6 +22,17 @@ comm_config = click.make_pass_decorator(Configer, ensure=True)
 # env.hosts = hosts1
 
 env.roledefs['git'] = ['localhost']
+
+
+def execute(task):
+    output = StringIO()
+    error = StringIO()
+    sys.stdout = output
+    sys.stderr = error
+    task()
+    sys.stdout = sys.__stdout__
+    sys.stderr = sys.__stderr__
+    return (output.getvalue(), error.getvalue())
 
 
 @roles('git')

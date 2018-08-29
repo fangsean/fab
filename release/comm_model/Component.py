@@ -111,7 +111,7 @@ class MainComponent(Component):
         print(blue("[INFO]  ............................................ 打包成功 > model_mvn_package"))
 
     # 3）发包：cp -rf /root/work/nq_basicservice/bs-web/target/bsweb.jar /home/admin/bsweb/target/temp
-    @runs_once
+    # @runs_once
     def model_jar_push(self):
         if self.model == None or self.model == '':
             return
@@ -138,7 +138,7 @@ class MainComponent(Component):
                 return False
 
     # 4）停止服务 jps | awk  '{ if($(NF) == "scmweb.jar"){print $(NF-1)}}' |xargs  kill -9
-    @runs_once
+    # @runs_once
     def model_server_kill(self):
         print("[INFO]  ............................................ 停止服务 > model_kill")
         try:
@@ -161,7 +161,7 @@ class MainComponent(Component):
     # 5）
     # 备份：cp -rf /home/admin/bsweb/target/bsweb.jar  backup
     # 替换jar文件: cp -rf /home/admin/bsweb/target/temp/bsweb.jar /home/admin/bsweb/target
-    @runs_once
+    # @runs_once
     def model_jar_upgraded(self):
         print("[INFO]  ............................................ 替换jar文件 > model_jar_prod")
         with cd(os.path.join(self.path_remote, 'target')):
@@ -173,7 +173,7 @@ class MainComponent(Component):
         print(blue("[INFO]  ............................................ 替换jar文件成功 > model_jar_prod"))
 
     # 6）重启服务：cd /home/admin/bsweb/bin; sh bsappstart.sh start
-    @runs_once
+    # @runs_once
     def model_server_startup(self):
         print("[INFO]  ............................................ 重启服务 > model_server_startup")
         with cd(os.path.join(self.path_remote, 'bin')):
@@ -183,7 +183,7 @@ class MainComponent(Component):
         print(blue('[INFO]  ............................................ 重启服务完成 > model_server_startup'))
 
     # 查看服务
-    @runs_once
+    # @runs_once
     def model_netstat(self):
         print("[INFO]  ............................................ 查看服务 > model_netstat")
         print(".................正在查看，请稍等...........................")
@@ -208,7 +208,7 @@ class BackUpComponent(Component):
         env.hosts = self.__finnal_configer__.get_params('server_hosts', self.model, self.deploy)
         self.file = None
 
-    @runs_once
+    # @runs_once
     def model_input_backup_file(self):
         print(white('Release file: '))
         while (True):
@@ -222,7 +222,7 @@ class BackUpComponent(Component):
 
     # 5）
     # 查看文件: ll /home/admin/tradeweb/target/backup
-    @runs_once
+    # @runs_once
     def model_jar_backup_list(self):
         print("[INFO]  ............................................ 还原jar文件 > model_jar_backup")
         with cd(os.path.join(self.path_remote, 'target', 'backup')):
@@ -235,7 +235,7 @@ class BackUpComponent(Component):
                     return result
 
     # 4）停止服务 jps | awk  '{ if($(NF) == "scmweb.jar"){print $(NF-1)}}' |xargs  kill -9
-    @runs_once
+    # @runs_once
     def model_server_kill(self):
         print("[INFO]  ............................................ 停止服务 > model_kill")
         try:
@@ -257,7 +257,7 @@ class BackUpComponent(Component):
 
     # 5）
     # 还原: cp -rf /home/admin/bsweb/target/back/bswebxxxxx.jar /home/admin/bsweb/target/bsweb.jar
-    @runs_once
+    # @runs_once
     def model_jar_backup(self, file):
         if file == None or file == '':
             sys.exit(red("备份文件错误，请检查！！"))
@@ -277,7 +277,7 @@ class BackUpComponent(Component):
                     sys.exit(red("[INFO]  ............................................ 未发现该文件 %s" % (file)))
 
     # 6）重启服务：cd /home/admin/bsweb/bin; sh bsappstart.sh start
-    @runs_once
+    # @runs_once
     def model_server_startup(self):
         print("[INFO]  ............................................ 重启服务 > model_server_startup")
         with cd(os.path.join(self.path_remote, 'bin')):
