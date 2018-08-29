@@ -9,11 +9,12 @@ import os
 #         print(dirs)  # 当前路径下所有子目录
 #         print(files)  # 当前路径下所有非目录子文件
 
-def file_name(file_dir, reg):
+def file_name(dir, reg):
     L = []
-    for root, dirs, files in os.walk(file_dir):
-        for file in files:
-            if os.path.splitext(file)[1] == reg:
-                L.append(os.path.join(root, file))
+    for root, dirs, files in os.walk(dir):
+        if "." not in os.path.basename(root):
+            for file in files:
+                if os.path.splitext(file)[1] == reg:
+                    L.append(os.path.join(root, file))
     return L
 

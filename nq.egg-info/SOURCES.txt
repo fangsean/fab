@@ -1,0 +1,8 @@
+README.md
+nq.py
+nq.egg-info/PKG-INFO
+nq.egg-info/SOURCES.txt
+nq.egg-info/dependency_links.txt
+nq.egg-info/entry_points.txt
+nq.egg-info/requires.txt
+nq.egg-info/top_level.txt

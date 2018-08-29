@@ -1,8 +1,10 @@
 # -*- encoding: utf-8 -*-
+from release import ROOT_PATH
+
 __author__ = "jsen"
 import configparser
 from release.util.fileUtil import file_name
-
+import os
 
 class Singleton(object):
     _instance = None
@@ -27,7 +29,7 @@ class Init(Singleton):
 
     def __init__(self):
         self.__final__config = configparser.ConfigParser()
-        self.__final__config.read(file_name('.', '.ini'), encoding='utf-8')
+        self.__final__config.read(file_name(ROOT_PATH, '.ini'), encoding='utf-8')
         self.config_params = {}
         sections = self.__final__config.sections()
         self.config_params = {

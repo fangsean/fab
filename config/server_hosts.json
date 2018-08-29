@@ -1,0 +1,26 @@
+{
+  "bsweb":{
+	  "prod":["host1","host2"],
+	  "pre":["host1","host2"],
+	  "test":["host1","host2"],
+	  "dev":["host1","host2"]
+  },
+  "tradeweb": {
+	  "prod":["host1","host2"],
+	  "pre":["host1","host2"],
+	  "test":["host1","host2"],
+	  "dev":["host1","host2"]
+  },
+  "scmweb": {
+	  "prod":["host1","host2"],
+	  "pre":["host1","host2"],
+	  "test":["host1","host2"],
+	  "dev":["host1","host2"]
+  },
+  "sellerweb": {
+	  "prod":["host1","host2"],
+	  "pre":["host1","host2"],
+	  "test":["host1","host2"],
+	  "dev":["host1","host2"]
+  }
+}

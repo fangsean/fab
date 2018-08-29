@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 import time
+import sys, os
 from abc import ABCMeta
 
 from fabric.api import *
@@ -8,15 +9,9 @@ from fabric.contrib.console import confirm
 
 from release.util.crypt import prpcrypt as CRYPT
 
-from release.setting import Configer
-
-__configer__ = Configer()
-
 
 class Component(object):
     __metaclass__ = ABCMeta
-    # config
-    configer = __configer__
     # [server] model
     DEFAULT_MODEL = None
     FILE_TYPE = '.jar'
@@ -24,11 +19,12 @@ class Component(object):
     COMPONENT_TYPE = None
     TASK_RELY = None
 
-    def __init__(self, model):
+    def __init__(self, config, model):
+        self.__finnal_configer__ = config
         self.model = model
-        self.path_local = Component.configer.get_params("path_local", model)
+        self.path_local = self.__finnal_configer__.get_params("path_local", model)
         # [Apps] domain
-        self.DEFAULT_DOMAIN = Component.configer.get_params('Apps', 'domain')
+        self.DEFAULT_DOMAIN = self.__finnal_configer__.get_params('Apps', 'domain')
 
     # 发布成功
     @runs_once
@@ -49,11 +45,11 @@ class GitComponent(Component):
     # [branch]
     DEFAULT_BRANCH = None
 
-    def __init__(self, model, branch):
-        super().__init__(model)
+    def __init__(self, config, model, branch):
+        super().__init__(config, model)
         self.branch = branch
-        self.path_git = Component.configer.get_params("path_git", model)
-        self.root = Component.configer.get_params("path_local", "root")
+        self.path_git = self.__finnal_configer__.get_params("path_git", model)
+        self.root = self.__finnal_configer__.get_params("path_local", "root")
 
     # 代码克隆
     @runs_once
@@ -90,22 +86,18 @@ class GitComponent(Component):
 
 
 class MainComponent(Component):
-    configer = Component.configer
-    # [Account] passwd
-    DEFAULT_PASSWORD = configer.get_params('Account', 'password')
-
     DEFAULT_DEPLOY = 'prod'
 
-    def __init__(self, model, deploy):
-        super().__init__(model)
+    def __init__(self, config, model, deploy):
+        super().__init__(config, model)
         if deploy != None and deploy != '':
             self.deploy = deploy
-        self.path_local_target = Component.configer.get_params("path_local_target", model)
-        self.path_remote = Component.configer.get_params("path_remote", model)
-        env.user = Component.configer.get_params('Account', 'user')
-        password = CRYPT.get_password(self.DEFAULT_DOMAIN, MainComponent.DEFAULT_PASSWORD)
+        self.path_local_target = self.__finnal_configer__.get_params("path_local_target", model)
+        self.path_remote = self.__finnal_configer__.get_params("path_remote", model)
+        env.user = self.__finnal_configer__.get_params('Account', 'user')
+        password = CRYPT.get_password(self.DEFAULT_DOMAIN, self.__finnal_configer__.get_params('Account', 'password'))
         env.password = password
-        env.hosts = Component.configer.get_params('server_hosts', self.model)
+        env.hosts = self.__finnal_configer__.get_params('server_hosts', self.model)
 
     # 2）打包：start /root/work/nq_basicservice/deploy/basicservice-mvn-build-prod.bat
     @runs_once
@@ -126,7 +118,7 @@ class MainComponent(Component):
                          os.path.join(self.path_remote, 'target', 'temp', self.model) + Component.FILE_TYPE)
             if result.failed and not confirm("put file faild, Continue[Y/N]?"):
                 abort("Aborting file put task!")
-                exit(red("[INFO]  ............................................ 远程发包失败 > model_jar_push"))
+                sys.exit(red("[INFO]  ............................................ 远程发包失败 > model_jar_push"))
             else:
                 print(blue("[INFO]  ............................................ 远程发包成功 > model_jar_push"))
 
@@ -160,7 +152,7 @@ class MainComponent(Component):
                     print(blue("[INFO]  ............................................ 已经杀掉进程，没有发现服务 > model_kill"))
                     break
         except Exception as e:
-            exit(red(str(e)))
+            sys.exit(red(str(e)))
         print(blue("[INFO]  ............................................ 停止服务完毕 > model_kill"))
 
     # 5）
@@ -200,25 +192,23 @@ class MainComponent(Component):
 
 
 class BackUpComponent(Component):
-    configer = Component.configer
-    # [Account] passwd
-    DEFAULT_PASSWORD = configer.get_params('Account', 'password')
-
     DEFAULT_DEPLOY = 'prod'
 
-    def __init__(self, model):
-        super().__init__(model)
-        self.path_remote = Component.configer.get_params("path_remote", model)
-        env.user = Component.configer.get_params('Account', 'user')
-        password = CRYPT.get_password(self.DEFAULT_DOMAIN, MainComponent.DEFAULT_PASSWORD)
+    def __init__(self, config, model, deploy):
+        super().__init__(config, model)
+        if deploy != None and deploy != '':
+            self.deploy = deploy
+        self.path_remote = self.__finnal_configer__.get_params("path_remote", model)
+        env.user = self.__finnal_configer__.get_params('Account', 'user')
+        password = CRYPT.get_password(self.DEFAULT_DOMAIN, self.__finnal_configer__.get_params('Account', 'password'))
         env.password = password
-        env.hosts = Component.configer.get_params('server_hosts', self.model)
+        env.hosts = self.__finnal_configer__.get_params('server_hosts', self.model)
         self.file = None
 
     @runs_once
     def model_input_backup_file(self):
         print(white('Release file: '))
-        while(True):
+        while (True):
             file = input("please input file from head list:")
             if file == None or file == '' or self.model not in file:
                 print(red('输入有误，文件名称不规范,重新输入...'))
@@ -237,7 +227,7 @@ class BackUpComponent(Component):
                 result = run('ls  -l ' + os.path.join(self.path_remote, 'target',
                                                       'backup') + ' ' + self.model + Component.FILE_TYPE + '*')
                 if "No such file or directory" in result:
-                    exit(yellow("[WARN]  ............................................ 未发现备份文件"))
+                    sys.exit(yellow("[WARN]  ............................................ 未发现备份文件"))
                 else:
                     return result
 
@@ -259,7 +249,7 @@ class BackUpComponent(Component):
                     print(blue("[INFO]  ............................................ 已经杀掉进程，没有发现服务 > model_kill"))
                     break
         except Exception as e:
-            exit(red(str(e)))
+            sys.exit(red(str(e)))
         print(blue("[INFO]  ............................................ 停止服务完毕 > model_kill"))
 
     # 5）
@@ -267,7 +257,7 @@ class BackUpComponent(Component):
     @runs_once
     def model_jar_backup(self, file):
         if file == None or file == '':
-            exit(red("备份文件错误，请检查！！"))
+            sys.exit(red("备份文件错误，请检查！！"))
         print("[INFO]  ............................................ 还原jar文件 > model_jar_backup")
         with cd(os.path.join(self.path_remote, 'target', 'backup')):
             run("pwd")
@@ -281,7 +271,7 @@ class BackUpComponent(Component):
                         self.path_remote, 'target'))
                     print(blue("[INFO]  ............................................ 还原jar文件成功 > model_jar_backup"))
                 else:
-                    exit(red("[INFO]  ............................................ 未发现该文件 %s" % (file)))
+                    sys.exit(red("[INFO]  ............................................ 未发现该文件 %s" % (file)))
 
     # 6）重启服务：cd /home/admin/bsweb/bin; sh bsappstart.sh start
     @runs_once

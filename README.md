@@ -191,3 +191,5 @@ sellerweb = /home/admin/sellerweb/
 
 
 ```
+-----------------------
+DOS:pip install --editable .

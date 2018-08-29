@@ -1,5 +1,11 @@
 # -*- encoding: utf-8 -*-
+from release import ROOT_PATH
 from release.init import Init
+import json
+import os
+import pickle
+
+from release.util.fileUtil import file_name
 
 
 class Configer():
@@ -7,16 +13,27 @@ class Configer():
     def __init__(self):
         self.__init__ = Init()
         self.__config_params__ = self.__init__.get_params()
-        self.__config_params__["server_hosts"] = {
-            server: self.__host_ref__(self.__config_params__["hosts"], self.__split_list__(hosts))
-            for server, hosts in self.__config_params__["server_hosts"].items()
-        }
+        files = file_name(ROOT_PATH, '.json')
+        for file in files:
+            if os.path.getsize(file) > 0:
+                name = os.path.basename(file)
+                index = name.rfind('.')
+                name = name[:index]
+                with open(file, 'rb') as f:
+                    self.__config_params__[name]=json.loads(f.read())
+        # self.__config_params__["server_hosts"] = {
+        #     server: self.__host_ref__(self.__config_params__["hosts"], self.__split_list__(hosts))
+        #     for server, hosts in self.__config_params__["server_hosts"].items()
+        # }
 
     def get_params(self, key, *args, **kwargs):
         if len(args) == 0 and len(kwargs) == 0:
             return self.__config_params__[key]
         else:
-            return self.__config_params__[key][args[0]]
+            temp = self.__config_params__[key]
+            for arg in args:
+                temp = temp[arg]
+            return temp
 
     def __split_list__(self, str):
         return str.split(',')
@@ -29,3 +46,9 @@ class Configer():
         except Exception as e:
             pass
         return params
+
+
+if __name__ == "__main__":
+    configer = Configer()
+    params = configer.get_params("server_hosts", 'bsweb','prod',1)
+    print(params)
