@@ -30,7 +30,7 @@ class Component(object):
         self.DEFAULT_DOMAIN = self.__finnal_configer__.get_params('Apps', 'domain')
 
     # 发布成功
-    @runs_once
+    # @runs_once
     def model_end(self):
         print(blue("[INFO]  ............................................ [" + self.model + "] 工作流程执行完毕..."))
 
@@ -287,7 +287,7 @@ class BackUpComponent(Component):
         print(blue('[INFO]  ............................................ 重启服务完成 > model_server_startup'))
 
     # 查看服务
-    @runs_once
+    # @runs_once
     def model_netstat(self):
         print("[INFO]  ............................................ 查看服务 > model_netstat")
         print(".................正在查看，请稍等...........................")
