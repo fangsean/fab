@@ -7,7 +7,10 @@ from fabric.api import *
 from fabric.colors import *
 from fabric.contrib.console import confirm
 
+from release.setting import Configer
 from release.util.crypt import prpcrypt as CRYPT
+
+config = Configer()
 
 
 class Component(object):
@@ -19,7 +22,7 @@ class Component(object):
     COMPONENT_TYPE = None
     TASK_RELY = None
 
-    def __init__(self, config, model):
+    def __init__(self, model):
         self.__finnal_configer__ = config
         self.model = model
         self.path_local = self.__finnal_configer__.get_params("path_local", model)
@@ -45,7 +48,7 @@ class GitComponent(Component):
     # [branch]
     DEFAULT_BRANCH = None
 
-    def __init__(self, config, model, branch):
+    def __init__(self, model, branch):
         super().__init__(config, model)
         self.branch = branch
         self.path_git = self.__finnal_configer__.get_params("path_git", model)
@@ -88,7 +91,7 @@ class GitComponent(Component):
 class MainComponent(Component):
     DEFAULT_DEPLOY = 'prod'
 
-    def __init__(self, config, model, deploy):
+    def __init__(self, model, deploy):
         super().__init__(config, model)
         if deploy != None and deploy != '':
             self.deploy = deploy
@@ -194,7 +197,7 @@ class MainComponent(Component):
 class BackUpComponent(Component):
     DEFAULT_DEPLOY = 'prod'
 
-    def __init__(self, config, model, deploy):
+    def __init__(self, model, deploy):
         super().__init__(config, model)
         if deploy != None and deploy != '':
             self.deploy = deploy
