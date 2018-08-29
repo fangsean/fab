@@ -110,6 +110,9 @@ def test(config, model, deploy):
     print(deploy)
     print(config.get_params("server_hosts",model, deploy))
     env.hosts = config.get_params("server_hosts",model, deploy)
+
+    local('fab test:deploy=pre,model=bsweb')
+
     sys.exit(blue("================ END =================="))
 
 
