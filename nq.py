@@ -21,7 +21,7 @@ def git(config, model, branch):
     ''' 执行代码更新任务 '''
 
     click.echo("***git 执行代码更新任务***")
-    if model == None or deploy == None:
+    if model == None or branch == None:
         click.echo(red("\t参数缺失！"))
         click.echo(red("\t请输入[model]参数："))
         click.echo(magenta(list(config.get_params("servers").keys())))
@@ -30,8 +30,7 @@ def git(config, model, branch):
         click.echo(yellow("\t如 git  mode:bsweb branch:developer"))
         sys.exit(red("================ Break =================="))
 
-    click.echo(model)
-    click.echo(branch)
+    local('fab git:model=%s,branch=%s' % (model, branch))
     click.echo("================================ START TASK ==============================")
 
 
@@ -52,8 +51,8 @@ def go(config, model, deploy):
         click.echo(yellow("\t如 go  mode:bsweb deploy:pre "))
         sys.exit(red("================ Break =================="))
 
-    click.echo(model)
-    click.echo(deploy)
+    env.hosts = config.get_params("server_hosts", model, deploy)
+    local('fab go:model=%s,deploy=%s' % (model, deploy))
     click.echo("================================ START TASK ==============================")
 
 
@@ -74,8 +73,8 @@ def backup(config, model, deploy):
         click.echo(yellow("\t如 backup  mode:bsweb deploy:pre "))
         sys.exit(red("================ Break =================="))
 
-    click.echo(model)
-    click.echo(deploy)
+    env.hosts = config.get_params("server_hosts", model, deploy)
+    local('fab backup:model=%s,deploy=%s' % (model, deploy))
     click.echo("================================ START TASK ==============================")
 
 
@@ -108,13 +107,12 @@ def test(config, model, deploy):
     # click.clear()
     print(model)
     print(deploy)
-    print(config.get_params("server_hosts",model, deploy))
-    env.hosts = config.get_params("server_hosts",model, deploy)
+    print(config.get_params("server_hosts", model, deploy))
+    env.hosts = config.get_params("server_hosts", model, deploy)
 
-    local('fab test:deploy=pre,model=bsweb')
+    local('fab test:model=%s,deploy=%s' % (model, deploy))
 
     sys.exit(blue("================ END =================="))
-
 
 # main.add_command(encrypt)
 # main.add_command(backup)
