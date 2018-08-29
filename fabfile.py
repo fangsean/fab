@@ -38,21 +38,19 @@ env.roledefs['git'] = ['localhost']
 @roles('git')
 @task()
 @parallel
-def git(**kwargs):
+def git(model,branch):
     ''' 执行代码更新任务 '''
 
     print("***git 执行代码更新任务***")
-    if len(kwargs) < 2 or 'model' not in kwargs.keys() or 'branch' not in kwargs.keys():
+    if model == '' or branch == '':
         print(red("\t参数缺失！"))
         print(yellow("\t请输入执行参数:"))
         print(yellow("\t\tmodel:%s" % (__configer.get_params("servers"))))
         print(yellow("\t\tbranch:%s" % (__configer.get_params("branch"))))
         print(yellow("\t如 fab git:model=bsweb,branch=developer"))
         print("Break")
-        sys.exit(0)
+        sys.exit(1)
 
-    model = kwargs['model']
-    branch = kwargs['branch']
     print("================================ START TASK ==============================")
     component = GitComponent(model, branch)
     execute(component.model_mvn_clone),
@@ -60,25 +58,24 @@ def git(**kwargs):
     execute(component.model_merge),
     execute(component.model_pull),
     execute(component.model_end)
+    sys.exit(0)
 
 
 @task()
 @parallel
-def go(**kwargs):
+def go(model, deploy):
     ''' 执行发布任务 '''
 
     print("***go 执行发布任务***")
-    if len(kwargs) < 2 or 'model' not in kwargs.keys() or 'deploy' not in kwargs.keys():
+    if model == '' or deploy == '':
         print(red("\t参数缺失！"))
         print(yellow("\t请输入执行参数:"))
         print(yellow("\t\tmodel:%s" % (__configer.get_params("servers"))))
         print(yellow("\t\tdeploy:%s" % (__configer.get_params("deploy"))))
         print(yellow("\t如 fab go:model=bsweb,deploy=pre"))
         print("Break")
-        sys.exit(0)
+        sys.exit(1)
 
-    model = kwargs['model']
-    deploy = kwargs['deploy']
     print("================================ START TASK ==============================")
     component = MainComponent(model, deploy)
     execute(component.model_mvn_package),
@@ -88,6 +85,7 @@ def go(**kwargs):
     execute(component.model_server_startup),
     execute(component.model_netstat),
     execute(component.model_end)
+    sys.exit(0)
 
 
 @roles('main')
@@ -104,7 +102,7 @@ def backup(model, deploy):
         print(yellow("\t\tdeploy:%s" % (__configer.get_params("deploy"))))
         print(yellow("\t如 fab backup:model=bsweb,deploy=pre"))
         print("Break")
-        sys.exit(0)
+        sys.exit(1)
 
     print("================================ START TASK ==============================")
     component = BackUpComponent(model, deploy)
@@ -115,7 +113,7 @@ def backup(model, deploy):
     execute(component.model_server_startup),
     execute(component.model_netstat),
     execute(component.model_end)
-    # exit(blue("回退成功"))
+    sys.exit(0)
 
 
 @task()
@@ -127,7 +125,6 @@ def test(model, deploy):
     component = BackUpComponent(model, deploy)
     # execute(component.model_netstat),
     execute(component.model_end)
-
     sys.exit(0)
 
 
