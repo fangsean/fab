@@ -8,11 +8,12 @@ import click
 
 from fabric.api import *
 from fabric.colors import *
+
+from nq import pass_config
 from release.comm_model.Component import CRYPT
 from release.comm_model.Component import Component, MainComponent, GitComponent, BackUpComponent
 
 from release.setting import Configer
-
 comm_config = click.make_pass_decorator(Configer, ensure=True)
 # env.user = user
 # env.password = password
@@ -110,10 +111,9 @@ def backup(config, **kwargs):
     execute(component.model_end)
     # exit(blue("回退成功"))
 
-
 @task()
 @parallel
-@comm_config
+@pass_config
 def test(config, model, deploy):
     ''' 测试 '''
 
