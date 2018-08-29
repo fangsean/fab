@@ -21,7 +21,7 @@ class Configer(object):
         self.__config_params__ = self.__init__.get_params()
         files = file_name(ROOT_PATH, '.json')
         print("path:"+ROOT_PATH)
-        print("file:"+list(files))
+        print("file:"+str(files))
         for file in files:
             if os.path.getsize(file) > 0:
                 name = os.path.basename(file)
