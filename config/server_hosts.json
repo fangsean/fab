@@ -1,26 +1,26 @@
 {
   "bsweb":{
 	  "prod":["host1","host2"],
-	  "pre":["host1","host2"],
-	  "test":["host1","host2"],
-	  "dev":["host1","host2"]
+	  "pre":["host3"],
+	  "test":["host8"],
+	  "dev":["host8"]
   },
   "tradeweb": {
 	  "prod":["host1","host2"],
-	  "pre":["host1","host2"],
-	  "test":["host1","host2"],
-	  "dev":["host1","host2"]
+	  "pre":["host7"],
+	  "test":["host8"],
+	  "dev":["host8"]
   },
   "scmweb": {
-	  "prod":["host1","host2"],
-	  "pre":["host1","host2"],
-	  "test":["host1","host2"],
-	  "dev":["host1","host2"]
+	  "prod":["host3","host4"],
+	  "pre":["host7"],
+	  "test":["host8"],
+	  "dev":["host8"]
   },
   "sellerweb": {
-	  "prod":["host1","host2"],
-	  "pre":["host1","host2"],
-	  "test":["host1","host2"],
-	  "dev":["host1","host2"]
+	  "prod":["host5","host6"],
+	  "pre":["host7"],
+	  "test":["host8"],
+	  "dev":["host8"]
   }
 }
