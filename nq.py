@@ -109,7 +109,7 @@ def test(config, model, deploy):
     print(model)
     print(deploy)
     print(config.get_params("server_hosts",model, deploy))
-
+    env.hosts = config.get_params("server_hosts",model, deploy)
     sys.exit(blue("================ END =================="))
 
 
