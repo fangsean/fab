@@ -6,6 +6,7 @@ from abc import ABCMeta
 from fabric.api import *
 from fabric.colors import *
 from fabric.contrib.console import confirm
+from fabric.context_managers import settings,hide
 
 from release.setting import Configer
 from release.util.crypt import prpcrypt as CRYPT
@@ -56,40 +57,46 @@ class GitComponent(Component):
 
     @runs_once
     def model_dir_check(self):
-        if int(run(" [ -e '" + self.root + "' ] && echo 11 || echo 10")) != 11:
-            local("mkdir -p %s" % (self.root))
+        # with settings(hide('warnings', 'running', 'stdout', 'stderr'), warn_only=False):
+        with settings(hide('running'), warn_only=False):
+            if int(run(" [ -e '" + self.root + "' ] && echo 11 || echo 10")) != 11:
+                local("mkdir -p %s" % (self.root))
 
     # 代码克隆
     @runs_once
     def model_mvn_clone(self):
-        with lcd(self.root):
-            local("rm  -rf %s" % (self.path_local))
-            local('git clone -b %s %s' % (self.branch, self.path_git))
+        with settings(hide('running'), warn_only=False):
+            with lcd(self.root):
+                local("rm  -rf %s" % (self.path_local))
+                local('git clone -b %s %s' % (self.branch, self.path_git))
 
     @runs_once
     def model_branch_list(self):
-        with lcd(self.path_local):
-            branchs = local("git remote show origin | awk '{L[NR]=$1}END{for (i=6;i<=NR-4;i++){print L[i]}}'")
-            return branchs
+        with settings(hide('running'), warn_only=False):
+            with lcd(self.path_local):
+                branchs = local("git remote show origin | awk '{L[NR]=$1}END{for (i=6;i<=NR-4;i++){print L[i]}}'")
+                return branchs
 
     # 代码更新合并
     @runs_once
     def model_merge(self):
         print("[INFO]  ............................................ 更新合并 > model_merge")
-        with lcd(self.path_local):
-            local('git fetch')
-            local('git checkout %s' % (self.branch))
-            local('git merge origin/%s' % (self.branch))
+        with settings(hide('running'), warn_only=False):
+            with lcd(self.path_local):
+                local('git fetch')
+                local('git checkout %s' % (self.branch))
+                local('git merge origin/%s' % (self.branch))
         print(blue("[INFO]  ............................................ 更新合并成功 > model_merge"))
 
     # 代码更新合并
     @runs_once
     def model_pull(self):
         print("[INFO]  ............................................ 更新合并 > model_pull")
-        with lcd(self.path_local):
-            local('git fetch')
-            local('git checkout %s' % (self.branch))
-            local('git pull origin %s' % (self.branch))
+        with settings(hide('running'), warn_only=False):
+            with lcd(self.path_local):
+                local('git fetch')
+                local('git checkout %s' % (self.branch))
+                local('git pull origin %s' % (self.branch))
         print(blue("[INFO]  ............................................ 更新合并成功 > model_pull"))
 
 
@@ -111,8 +118,9 @@ class MainComponent(Component):
     @runs_once
     def model_mvn_package(self):
         print("[INFO]  ............................................ 打包 > model_mvn_package")
-        with lcd(self.path_local):
-            local('mvn clean compile package install -Dmaven.test.skip=true -U -P %s' % (self.deploy))
+        with settings(hide('running'), warn_only=False):
+            with lcd(self.path_local):
+                local('mvn clean compile package install -Dmaven.test.skip=true -U -P %s' % (self.deploy))
         print(blue("[INFO]  ............................................ 打包成功 > model_mvn_package"))
 
     # 3）发包：cp -rf /root/work/nq_basicservice/bs-web/target/bsweb.jar /home/admin/bsweb/target/temp
@@ -133,8 +141,8 @@ class MainComponent(Component):
 
     # 校验文件
     def model_jar_check(self):
-        with lcd(self.path_local_target):
-            with settings(warn_only=True):
+        with settings(hide('running'), warn_only=False):
+            with lcd(self.path_local_target):
                 lmd5 = local('md5sum ' + self.model + Component.FILE_TYPE, capture=True).split(' ')[0]
                 rmd5 = run('md5sum ' + os.path.join(self.path_remote, 'target', 'temp',
                                                     self.model) + Component.FILE_TYPE).split(' ')[0]
@@ -171,8 +179,8 @@ class MainComponent(Component):
     # @runs_once
     def model_jar_upgraded(self):
         print("[INFO]  ............................................ 替换jar文件 > model_jar_prod")
-        with cd(os.path.join(self.path_remote, 'target')):
-            with settings(warn_only=True):
+        with settings(hide('running'), warn_only=False):
+            with cd(os.path.join(self.path_remote, 'target')):
                 if int(run(" [ -e '" + self.model + Component.FILE_TYPE + "' ] && echo 11 || echo 10")) == 11:
                     run(
                         'cp -rf  ' + self.model + Component.FILE_TYPE + '  ./backup/' + self.model + Component.FILE_TYPE + '.$(date +%Y%m%d.%H.%M.%S)')
@@ -183,10 +191,11 @@ class MainComponent(Component):
     # @runs_once
     def model_server_startup(self):
         print("[INFO]  ............................................ 重启服务 > model_server_startup")
-        with cd(os.path.join(self.path_remote, 'bin')):
-            # run("find . -name '*appstart.sh' -exec {} start \;")
-            # run("sh bsappstart.sh start && sleep 3 ", pty=False)
-            run("find . -name '*appstart.sh' -exec {} start \; && sleep 3 ", pty=False)
+        with settings(hide('running'), warn_only=False):
+            with cd(os.path.join(self.path_remote, 'bin')):
+                # run("find . -name '*appstart.sh' -exec {} start \;")
+                # run("sh bsappstart.sh start && sleep 3 ", pty=False)
+                run("find . -name '*appstart.sh' -exec {} start \; && sleep 3 ", pty=False)
         print(blue('[INFO]  ............................................ 重启服务完成 > model_server_startup'))
 
     # 查看服务
@@ -194,11 +203,12 @@ class MainComponent(Component):
     def model_netstat(self):
         print("[INFO]  ............................................ 查看服务 > model_netstat")
         print(".................正在查看，请稍等...........................")
-        local('sleep 5')
-        run("ps aux | grep java | grep -v grep ", pty=False)
-        local('sleep 1')
-        print("[INFO]  ............................................ JPS > ")
-        open_shell("jps && exit ")
+        with settings(hide('running'), warn_only=True):
+            local('sleep 2')
+            run("ps aux | grep java | grep -v grep ", pty=False)
+            local('sleep 1')
+            print("[INFO]  ............................................ JPS > ")
+            open_shell("jps && exit ")
 
 
 class BackUpComponent(Component):
@@ -233,8 +243,8 @@ class BackUpComponent(Component):
     def model_jar_backup_list(self):
         print("[INFO]  ............................................ 还原jar文件 > model_jar_backup")
         try:
-            with cd(os.path.join(self.path_remote, 'target', 'backup')):
-                with settings(warn_only=True):
+            with settings(hide('running'), warn_only=False):
+                with cd(os.path.join(self.path_remote, 'target', 'backup')):
                     result = run('ls  -l ' + os.path.join(self.path_remote, 'target',
                                                           'backup') + ' ' + self.model + Component.FILE_TYPE + '*')
                     if "No such file or directory" in result:
@@ -279,7 +289,7 @@ class BackUpComponent(Component):
         print("[INFO]  ............................................ 还原jar文件 > model_jar_backup")
         with cd(os.path.join(self.path_remote, 'target', 'backup')):
             run("pwd")
-            with settings(warn_only=True):
+            with settings(hide('running'), warn_only=False):
                 if int(run(" [ -e '" + os.path.join(self.path_remote, 'target', 'backup',
                                                     file) + "' ] && echo 11 || echo 10")) == 11:
                     run('cp -rf ' + os.path.join(self.path_remote, 'target', 'backup', file) + ' ' + os.path.join(
@@ -296,10 +306,11 @@ class BackUpComponent(Component):
     # @runs_once
     def model_server_startup(self):
         print("[INFO]  ............................................ 重启服务 > model_server_startup")
-        with cd(os.path.join(self.path_remote, 'bin')):
-            # run("find . -name '*appstart.sh' -exec {} start \;")
-            # run("sh bsappstart.sh start && sleep 3 ", pty=False)
-            run("find . -name '*appstart.sh' -exec {} start \; && sleep 3 ", pty=False)
+        with settings(hide('running'), warn_only=False):
+            with cd(os.path.join(self.path_remote, 'bin')):
+                # run("find . -name '*appstart.sh' -exec {} start \;")
+                # run("sh bsappstart.sh start && sleep 3 ", pty=False)
+                run("find . -name '*appstart.sh' -exec {} start \; && sleep 3 ", pty=False)
         print(blue('[INFO]  ............................................ 重启服务完成 > model_server_startup'))
 
     # 查看服务
@@ -307,8 +318,9 @@ class BackUpComponent(Component):
     def model_netstat(self):
         print("[INFO]  ............................................ 查看服务 > model_netstat")
         print(".................正在查看，请稍等...........................")
-        local('sleep 5')
-        run("ps aux | grep java | grep -v grep ", pty=False)
-        local('sleep 1')
-        print("[INFO]  ............................................ JPS > ")
-        open_shell("jps && exit ")
+        with settings(hide('running'), warn_only=False):
+            local('sleep 2')
+            run("ps aux | grep java | grep -v grep ", pty=False)
+            local('sleep 1')
+            print("[INFO]  ............................................ JPS > ")
+            open_shell("jps && exit ")
