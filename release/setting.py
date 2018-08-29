@@ -6,6 +6,39 @@ from fabric.colors import *
 from release import ROOT_PATH
 from release.init import Init
 from release.util.fileUtil import file_name
+from fabric.api import *
+from fabric.colors import green, red, blue, cyan, yellow
+import os, sys
+import socket
+import datetime
+import logging
+import logging.handlers
+
+
+class Logger(object):
+    instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls.instance is None:
+            cls.instance = super().__new__(cls, *args, **kwargs)
+        return cls.instance
+
+    def __init__(self):
+        log_root = os.path.join(ROOT_PATH, "..", "logs")
+        run("mkdir -p %s" % (log_root))
+        log_name = ''.join(env.host_string.split('.')) + '.log'
+        self.log_file = os.path.join(log_root, log_name)
+
+    def get_logger(self):
+        logger = logging.getLogger("fabric")
+        formater = logging.Formatter("%(asctime)s %(name)s %(levelname)s %(message)s", "%Y-%m-%d %H:%M:%S")
+        file_handler = logging.handlers.RotatingFileHandler(self.log_file, maxBytes=10240000, backupCount=5)
+        file_handler.setFormatter(formater)
+        stream_handler = logging.StreamHandler(sys.stderr)
+        logger.addHandler(file_handler)
+        logger.addHandler(stream_handler)
+        logger.setLevel(logging.INFO)
+        return logger
 
 
 class Configer(object):
