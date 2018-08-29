@@ -38,8 +38,6 @@ class Configer(object):
             for server, deploy in self.__config_params__["server_hosts"].items()
         }
 
-        click.echo(blue("++++++++===========加载完成=================+++++++++"))
-
     def get_params(self, key, *args, **kwargs):
         if len(args) == 0 and len(kwargs) == 0:
             return self.__config_params__[key]

@@ -6,8 +6,10 @@ import configparser
 from release.util.fileUtil import file_name
 import os
 
+
 class Singleton(object):
     _instance = None
+
     def __new__(cls, *args, **kwargs):
         if Singleton._instance is None:
             Singleton._instance = object.__new__(cls, *args, **kwargs)
@@ -23,6 +25,7 @@ class Init(Singleton):
         私有变量
         内置变量
     """
+
     # config
 
     def __init__(self):
@@ -37,8 +40,6 @@ class Init(Singleton):
             }
             for section in sections
         }
-
-        print("===========================")
 
     # descriptor
     # def __get__(self, obj, objtype):
