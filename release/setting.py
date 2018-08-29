@@ -26,15 +26,16 @@ class Configer(object):
                 index = name.rfind('.')
                 name = name[:index]
                 with open(file, 'rb') as f:
-                    self.__config_params__[name] = json.loads(f.read())
+                    print(json.loads(f.read()))
+                    # self.__config_params__[name] = json.loads(f.read())
 
-        self.__config_params__["server_hosts"] = {
-            server: {
-                _deploy: self.__host_ref__(self.__config_params__["hosts"], _hosts)
-                for _deploy, _hosts in deploy.items()
-            }
-            for server, deploy in self.__config_params__["server_hosts"].items()
-        }
+        # self.__config_params__["server_hosts"] = {
+        #     server: {
+        #         _deploy: self.__host_ref__(self.__config_params__["hosts"], _hosts)
+        #         for _deploy, _hosts in deploy.items()
+        #     }
+        #     for server, deploy in self.__config_params__["server_hosts"].items()
+        # }
 
     def get_params(self, key, *args, **kwargs):
         if len(args) == 0 and len(kwargs) == 0:
