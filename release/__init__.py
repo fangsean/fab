@@ -1,3 +1,3 @@
 import os
 
-ROOT_PATH = os.path.abspath('..')
+ROOT_PATH = os.path.abspath('.')

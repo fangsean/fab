@@ -20,24 +20,21 @@ class Configer(object):
         self.__init__ = Init()
         self.__config_params__ = self.__init__.get_params()
         files = file_name(ROOT_PATH, '.json')
-        print("path:"+ROOT_PATH)
-        print("file:"+str(files))
         for file in files:
             if os.path.getsize(file) > 0:
                 name = os.path.basename(file)
                 index = name.rfind('.')
                 name = name[:index]
                 with open(file, 'rb') as f:
-                    pass
-                    # self.__config_params__[name] = json.loads(f.read())
+                    self.__config_params__[name] = json.loads(f.read())
 
-        # self.__config_params__["server_hosts"] = {
-        #     server: {
-        #         _deploy: self.__host_ref__(self.__config_params__["hosts"], _hosts)
-        #         for _deploy, _hosts in deploy.items()
-        #     }
-        #     for server, deploy in self.__config_params__["server_hosts"].items()
-        # }
+        self.__config_params__["server_hosts"] = {
+            server: {
+                _deploy: self.__host_ref__(self.__config_params__["hosts"], _hosts)
+                for _deploy, _hosts in deploy.items()
+            }
+            for server, deploy in self.__config_params__["server_hosts"].items()
+        }
 
     def get_params(self, key, *args, **kwargs):
         if len(args) == 0 and len(kwargs) == 0:
