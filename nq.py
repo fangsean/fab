@@ -90,8 +90,8 @@ def encrypt(config, passwd):
     # click.clear()
     key = config.get_params('Apps', 'domain')
     password_crypt = CRYPT.encrypt_password(key, passwd)
-    click.echo(yellow("\t\tinput passwd:%s" % (passwd)))
-    click.echo(yellow("\t\tencrypt passwd:%s" % (password_crypt)))
+    click.echo(yellow("\tinput passwd:%s" % (passwd)))
+    click.echo(yellow("\tencrypt passwd:%s" % (password_crypt)))
 
     sys.exit(blue("================ END =================="))
 
