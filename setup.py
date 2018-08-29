@@ -1,7 +1,7 @@
 import sys
-from setuptools import setup,find_packages
+from setuptools import setup, find_packages
 
-with open('README.md',encoding='utf-8') as description:
+with open('README.md', encoding='utf-8') as description:
     long_description = description.read()
 
 fabric_package = sys.version_info < (3, 0) and 'Fabric>=1.1,<2.0' or 'Fabric3>=1.1,<2.0'
@@ -12,6 +12,7 @@ install_requires = [
 setup(
     name='nq',
     version='2.0',
+    author='jsen.yin',
     author_email='jsen.yin@gmail.com',
     # packages=find_packages('release'),
     py_modules=['nq'],
