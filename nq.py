@@ -91,7 +91,7 @@ def backup(config, model, deploy):
         click.echo(magenta(list(config.get_params("servers").keys())))
         click.echo(red("\t请输入[deploy]参数:"))
         click.echo(magenta(list(config.get_params("deploy").keys())))
-        click.echo(yellow("\t如 backup  --mode bsweb --deploy pre "))
+        click.echo(yellow("\t如 backup  --model bsweb --deploy pre "))
         sys.exit(red("================ Break =================="))
 
     if model not in models and deploy not in deploys:
