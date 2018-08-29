@@ -10,7 +10,13 @@ from fabric.colors import *
 from release.util.fileUtil import file_name
 
 
-class Configer(Singleton):
+class Configer(object):
+    instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls.instance is None:
+            cls.instance = super().__new__(cls, *args, **kwargs)
+        return cls.instance
 
     def __init__(self):
         self.__init__ = Init()
@@ -33,7 +39,6 @@ class Configer(Singleton):
         }
 
         click.echo(blue("++++++++===========加载完成=================+++++++++"))
-
 
     def get_params(self, key, *args, **kwargs):
         if len(args) == 0 and len(kwargs) == 0:
