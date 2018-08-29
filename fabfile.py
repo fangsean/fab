@@ -24,15 +24,15 @@ comm_config = click.make_pass_decorator(Configer, ensure=True)
 env.roledefs['git'] = ['localhost']
 
 
-def execute(task):
-    output = StringIO()
-    error = StringIO()
-    sys.stdout = output
-    sys.stderr = error
-    task()
-    sys.stdout = sys.__stdout__
-    sys.stderr = sys.__stderr__
-    return (output.getvalue(), error.getvalue())
+# def _execute(task):
+#     output = StringIO()
+#     error = StringIO()
+#     sys.stdout = output
+#     sys.stderr = error
+#     task()
+#     sys.stdout = sys.__stdout__
+#     sys.stderr = sys.__stderr__
+#     return (output.getvalue(), error.getvalue())
 
 
 @roles('git')
