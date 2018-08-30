@@ -1,18 +1,15 @@
 # -*- encoding: utf-8 -*-
 import json
+import logging
+import logging.handlers
+import os
+import sys
 
-from fabric.colors import *
+from fabric.api import *
 
 from release import ROOT_PATH
 from release.init import Init
 from release.util.fileUtil import file_name
-from fabric.api import *
-from fabric.colors import green, red, blue, cyan, yellow
-import os, sys
-import socket
-import datetime
-import logging
-import logging.handlers
 
 
 class Logger(object):
@@ -34,16 +31,21 @@ class Logger(object):
         formater = logging.Formatter("%(asctime)s %(name)s %(levelname)s %(message)s", "%Y-%m-%d %H:%M:%S")
         file_handler = logging.handlers.RotatingFileHandler(self.log_file, maxBytes=10240000, backupCount=5)
         file_handler.setFormatter(formater)
-        stream_handler = logging.StreamHandler(sys.stderr)
+        stream_handler_err = logging.StreamHandler(sys.stderr)
+        stream_handler_stdout = logging.StreamHandler(sys.stdout)
+        stream_handler_stdin = logging.StreamHandler(sys.stdin)
+        sys.exc_info()
         logger.addHandler(file_handler)
-        logger.addHandler(stream_handler)
-        logger.setLevel(logging.INFO)
+        logger.addHandler(stream_handler_err)
+        logger.addHandler(stream_handler_stdout)
+        logger.addHandler(stream_handler_stdin)
+        logger.setLevel(logging.DEBUG)
         return logger
 
 
 class Configer(object):
     instance = None
-    __first_init = True
+    # __first_init = True
 
     def __new__(cls, *args, **kwargs):
         if cls.instance is None:
@@ -51,27 +53,26 @@ class Configer(object):
         return cls.instance
 
     def __init__(self):
-        if self.__first_init:
-            print("----- Init Config ----")
-            self.__init__ = Init()
-            self.__config_params__ = self.__init__.get_params()
-            files = file_name(ROOT_PATH, '.json')
-            for file in files:
-                if os.path.getsize(file) > 0:
-                    name = os.path.basename(file)
-                    index = name.rfind('.')
-                    name = name[:index]
-                    with open(file, 'rb') as f:
-                        self.__config_params__[name] = json.loads(f.read())
+        # if self.__first_init:
+        self.__init__ = Init()
+        self.__config_params__ = self.__init__.get_params()
+        files = file_name(ROOT_PATH, '.json')
+        for file in files:
+            if os.path.getsize(file) > 0:
+                name = os.path.basename(file)
+                index = name.rfind('.')
+                name = name[:index]
+                with open(file, 'rb') as f:
+                    self.__config_params__[name] = json.loads(f.read())
 
-            self.__config_params__["server_hosts"] = {
-                server: {
-                    _deploy: self.__host_ref__(self.__config_params__["hosts"], _hosts)
-                    for _deploy, _hosts in deploy.items()
-                }
-                for server, deploy in self.__config_params__["server_hosts"].items()
+        self.__config_params__["server_hosts"] = {
+            server: {
+                _deploy: self.__host_ref__(self.__config_params__["hosts"], _hosts)
+                for _deploy, _hosts in deploy.items()
             }
-            self.__first_init = False
+            for server, deploy in self.__config_params__["server_hosts"].items()
+        }
+        # self.__first_init = False
 
     def get_params(self, key, *args, **kwargs):
         if len(args) == 0 and len(kwargs) == 0:
