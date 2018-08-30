@@ -38,7 +38,7 @@ def git(config, model, branch):
         sys.exit(red("================ Stop =================="))
 
     local('fab git:model=%s,branch=%s' % (model, branch))
-    click.echo("================================ END TASK ==============================")
+    click.echo(blue("================================ END TASK =============================="))
 
 
 @main.command()
@@ -71,7 +71,7 @@ def go(config, model, deploy):
 
     env.hosts = config.get_params("server_hosts", model, deploy)
     local('fab go:model=%s,deploy=%s' % (model, deploy))
-    click.echo("================================ END TASK ==============================")
+    click.echo(blue("================================ END TASK =============================="))
 
 
 @main.command()
@@ -104,7 +104,7 @@ def backup(config, model, deploy):
 
     env.hosts = config.get_params("server_hosts", model, deploy)
     local('fab backup:model=%s,deploy=%s' % (model, deploy))
-    click.echo("================================ END TASK ==============================")
+    click.echo(blue("================================ END TASK =============================="))
 
 
 @main.command()
