@@ -24,6 +24,8 @@ class Component(object):
     def __init__(self, model):
         self.__finnal_configer__ = Configer()
         self.__finnal_logger__ = Logger().get_logger()
+
+        self.model = model
         self.path_local = self.__finnal_configer__.get_params("path_local", model)
         # [Apps] domain
         self.DEFAULT_DOMAIN = self.__finnal_configer__.get_params('Apps', 'domain')
@@ -31,7 +33,8 @@ class Component(object):
     # 发布成功
     # @runs_once
     def model_end(self):
-        self.__finnal_logger__.info(blue("[INFO]  ............................................ [" + self.model + "] 工作流程执行完毕..."))
+        self.__finnal_logger__.info(
+            blue("[INFO]  ............................................ [" + self.model + "] 工作流程执行完毕..."))
 
     @staticmethod
     def extract_component_class(component_type):
@@ -129,7 +132,8 @@ class MainComponent(Component):
         with settings(hide('running'), warn_only=False):
             with lcd(self.path_local):
                 local('mvn clean compile package install -Dmaven.test.skip=true -U -P %s' % (self.deploy))
-        self.__finnal_logger__.info(blue("[INFO]  ............................................ 打包成功 > model_mvn_package"))
+        self.__finnal_logger__.info(
+            blue("[INFO]  ............................................ 打包成功 > model_mvn_package"))
 
     # 3）发包：cp -rf /root/work/nq_basicservice/bs-web/target/bsweb.jar /home/admin/bsweb/target/temp
     # @runs_once
@@ -142,10 +146,12 @@ class MainComponent(Component):
                          os.path.join(self.path_remote, 'target', 'temp', self.model) + Component.FILE_TYPE)
             if result.failed and not confirm("put file faild, Continue[Y/N]?"):
                 abort("Aborting file put task!")
-                self.__finnal_logger__.info(red("[INFO]  ............................................ 远程发包失败 > model_jar_push"))
+                self.__finnal_logger__.info(
+                    red("[INFO]  ............................................ 远程发包失败 > model_jar_push"))
                 sys.exit()
             else:
-                self.__finnal_logger__.info(blue("[INFO]  ............................................ 远程发包成功 > model_jar_push"))
+                self.__finnal_logger__.info(
+                    blue("[INFO]  ............................................ 远程发包成功 > model_jar_push"))
 
     # 校验文件
     def model_jar_check(self):
@@ -169,12 +175,14 @@ class MainComponent(Component):
                 PID = run('jps | awk  \'{ if($(NF) == \"' + self.model + Component.FILE_TYPE + '\"){print $(NF-1)}}\'')
                 self.__finnal_logger__.info("PID: %s" % (PID))
                 if PID != None and PID != '' and int(PID) > 0:
-                    self.__finnal_logger__.warning(yellow("[INFO]  ............................................ 进程存在，进行kill > model_kill"))
+                    self.__finnal_logger__.warning(
+                        yellow("[INFO]  ............................................ 进程存在，进行kill > model_kill"))
                     run("kill  %s && sleep 1" % (PID), pty=False)
                     time.sleep(1)
                 # open_shell('jps | awk  \'{ if($(NF) == \"' + model + '.jar\"){print $(NF-1)}}\' |xargs  kill -9 ')
                 else:
-                    self.__finnal_logger__.warning(blue("[INFO]  ............................................ 已经杀掉进程，没有发现服务 > model_kill"))
+                    self.__finnal_logger__.warning(
+                        blue("[INFO]  ............................................ 已经杀掉进程，没有发现服务 > model_kill"))
                     break
         except Exception as e:
             self.__finnal_logger__.error(red(str(e)))
@@ -193,7 +201,8 @@ class MainComponent(Component):
                     run(
                         'cp -rf  ' + self.model + Component.FILE_TYPE + '  ./backup/' + self.model + Component.FILE_TYPE + '.$(date +%Y%m%d.%H.%M.%S)')
                 run('mv -f  ./temp/' + self.model + Component.FILE_TYPE + ' ./')
-        self.__finnal_logger__.info(blue("[INFO]  ............................................ 替换jar文件成功 > model_jar_prod"))
+        self.__finnal_logger__.info(
+            blue("[INFO]  ............................................ 替换jar文件成功 > model_jar_prod"))
 
     # 6）重启服务：cd /home/admin/bsweb/bin; sh bsappstart.sh start
     # @runs_once
@@ -204,7 +213,8 @@ class MainComponent(Component):
                 # run("find . -name '*appstart.sh' -exec {} start \;")
                 # run("sh bsappstart.sh start && sleep 3 ", pty=False)
                 run("find . -name '*appstart.sh' -exec {} start \; && sleep 3 ", pty=False)
-        self.__finnal_logger__.info(blue('[INFO]  ............................................ 重启服务完成 > model_server_startup'))
+        self.__finnal_logger__.info(
+            blue('[INFO]  ............................................ 重启服务完成 > model_server_startup'))
 
     # 查看服务
     # @runs_once
@@ -256,7 +266,8 @@ class BackUpComponent(Component):
                     result = run('ls  -l ' + os.path.join(self.path_remote, 'target',
                                                           'backup') + ' ' + self.model + Component.FILE_TYPE + '*')
                     if "No such file or directory" in result:
-                        self.__finnal_logger__.error(red("[ERROR]  ............................................ 未发现备份文件"))
+                        self.__finnal_logger__.error(
+                            red("[ERROR]  ............................................ 未发现备份文件"))
                         sys.exit()
                     else:
                         return result
@@ -274,12 +285,14 @@ class BackUpComponent(Component):
                 PID = run('jps | awk  \'{ if($(NF) == \"' + self.model + Component.FILE_TYPE + '\"){print $(NF-1)}}\'')
                 self.__finnal_logger__.info("PID: %s" % (PID))
                 if PID != None and PID != '' and int(PID) > 0:
-                    self.__finnal_logger__.warning(yellow("[INFO]  ............................................ 进程存在，进行kill > model_kill"))
+                    self.__finnal_logger__.warning(
+                        yellow("[INFO]  ............................................ 进程存在，进行kill > model_kill"))
                     run("kill  %s && sleep 1" % (PID), pty=False)
                     time.sleep(1)
                 # open_shell('jps | awk  \'{ if($(NF) == \"' + model + '.jar\"){print $(NF-1)}}\' |xargs  kill -9 ')
                 else:
-                    self.__finnal_logger__.warning(blue("[INFO]  ............................................ 已经杀掉进程，没有发现服务 > model_kill"))
+                    self.__finnal_logger__.warning(
+                        blue("[INFO]  ............................................ 已经杀掉进程，没有发现服务 > model_kill"))
                     break
         except Exception as e:
             self.__finnal_logger__.error(red(str(e)))
@@ -304,9 +317,11 @@ class BackUpComponent(Component):
                     run('mv -f ' + ' ' + os.path.join(self.path_remote, 'target', 'backup',
                                                       self.model + Component.FILE_TYPE) + ' ' + os.path.join(
                         self.path_remote, 'target'))
-                    self.__finnal_logger__.info(blue("[INFO]  ............................................ 还原jar文件成功 > model_jar_backup"))
+                    self.__finnal_logger__.info(
+                        blue("[INFO]  ............................................ 还原jar文件成功 > model_jar_backup"))
                 else:
-                    self.__finnal_logger__.error(red("[INFO]  ............................................ 未发现该文件 %s" % (file)))
+                    self.__finnal_logger__.error(
+                        red("[INFO]  ............................................ 未发现该文件 %s" % (file)))
                     sys.exit()
 
     # 6）重启服务：cd /home/admin/bsweb/bin; sh bsappstart.sh start
@@ -318,7 +333,8 @@ class BackUpComponent(Component):
                 # run("find . -name '*appstart.sh' -exec {} start \;")
                 # run("sh bsappstart.sh start && sleep 3 ", pty=False)
                 run("find . -name '*appstart.sh' -exec {} start \; && sleep 3 ", pty=False)
-        self.__finnal_logger__.info(blue('[INFO]  ............................................ 重启服务完成 > model_server_startup'))
+        self.__finnal_logger__.info(
+            blue('[INFO]  ............................................ 重启服务完成 > model_server_startup'))
 
     # 查看服务
     # @runs_once
