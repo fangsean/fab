@@ -44,7 +44,7 @@ def git(model,branch):
         print("Break")
         sys.exit(1)
 
-    click.echo(blue("================================ START TASK =============================="))
+    click.echo(blue("================================ START GIT TASK =============================="))
     component = GitComponent(model, branch)
     execute(component.model_dir_check),
     execute(component.model_mvn_clone),
@@ -70,7 +70,7 @@ def go(model, deploy):
         print("Break")
         sys.exit(1)
 
-    click.echo(blue("================================ START TASK =============================="))
+    click.echo(blue("================================ START GO TASK =============================="))
     component = MainComponent(model, deploy)
     execute(component.model_dir_check()),
     execute(component.model_mvn_package),
@@ -98,7 +98,7 @@ def backup(model, deploy):
         print("Break")
         sys.exit(1)
 
-    click.echo(blue("================================ START TASK =============================="))
+    click.echo(blue("================================ START BACKUP TASK =============================="))
     component = BackUpComponent(model, deploy)
     execute(component.model_jar_backup_list),
     execute(component.model_input_backup_file),
