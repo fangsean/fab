@@ -1,8 +1,8 @@
 # -*- coding:utf-8 -*-
-import sys
-from Crypto.Cipher import AES
-from binascii import b2a_hex, a2b_hex
 import hashlib
+from binascii import b2a_hex, a2b_hex
+
+from Crypto.Cipher import AES
 
 
 class prpcrypt():

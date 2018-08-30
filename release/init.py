@@ -3,7 +3,7 @@ from release import ROOT_PATH
 
 __author__ = "jsen"
 import configparser
-from release.util.fileUtil import file_name
+from release.util.files import file_name
 import os
 
 

@@ -6,44 +6,23 @@ import click
 from fabric.api import *
 from fabric.colors import *
 
-from release.comm_model.Component import MainComponent, GitComponent, BackUpComponent
+from release.comm_model.component import MainComponent, GitComponent, BackUpComponent
 from release.setting import Configer
+from release.util.mylog import func_exception_log
 
 __configer = click.make_pass_decorator(Configer, ensure=True)
-# env.user = user
-# env.password = password
-# env.hosts = hosts1
 
 env.roledefs['git'] = ['localhost']
-
-
-# def _execute(task):
-#     output = StringIO()
-#     error = StringIO()
-#     sys.stdout = output
-#     sys.stderr = error
-#     task()
-#     sys.stdout = sys.__stdout__
-#     sys.stderr = sys.__stderr__
-#     return (output.getvalue(), error.getvalue())
 
 
 @roles('git')
 @task()
 @parallel
-def git(model,branch):
+@func_exception_log("git")
+def git(model, branch):
     ''' 执行代码更新任务 '''
 
     click.echo("***git 执行代码更新任务***")
-    if model == '' or branch == '':
-        print(red("\t参数缺失！"))
-        print(yellow("\t请输入执行参数:"))
-        print(yellow("\t\tmodel:%s" % (__configer.get_params("servers"))))
-        print(yellow("\t\tbranch:%s" % (__configer.get_params("branch"))))
-        print(yellow("\t如 fab git:model=bsweb,branch=developer"))
-        print("Break")
-        sys.exit(1)
-
     click.echo(blue("================================ START GIT TASK =============================="))
     component = GitComponent(model, branch)
     execute(component.model_dir_check),
@@ -57,19 +36,11 @@ def git(model,branch):
 
 @task()
 @parallel
+@func_exception_log("go")
 def go(model, deploy):
     ''' 执行发布任务 '''
 
-    print("***go 执行发布任务***")
-    if model == '' or deploy == '':
-        print(red("\t参数缺失！"))
-        print(yellow("\t请输入执行参数:"))
-        print(yellow("\t\tmodel:%s" % (__configer.get_params("servers"))))
-        print(yellow("\t\tdeploy:%s" % (__configer.get_params("deploy"))))
-        print(yellow("\t如 fab go:model=bsweb,deploy=pre"))
-        print("Break")
-        sys.exit(1)
-
+    click.echo("***go 执行发布任务***")
     click.echo(blue("================================ START GO TASK =============================="))
     component = MainComponent(model, deploy)
     execute(component.model_dir_check()),
@@ -85,19 +56,11 @@ def go(model, deploy):
 
 @task()
 @parallel
+@func_exception_log("backup")
 def backup(model, deploy):
     ''' 执行回退任务 '''
 
-    print(yellow("***backup 执行回退任务***"))
-    if model == '' or deploy == '':
-        print(red("\t参数缺失！"))
-        print(yellow("\t请输入执行参数:"))
-        print(yellow("\t\tmodel:%s" % (__configer.get_params("servers"))))
-        print(yellow("\t\tdeploy:%s" % (__configer.get_params("deploy"))))
-        print(yellow("\t如 fab backup:model=bsweb,deploy=pre"))
-        print("Break")
-        sys.exit(1)
-
+    click.echo(yellow("***backup 执行回退任务***"))
     click.echo(blue("================================ START BACKUP TASK =============================="))
     component = BackUpComponent(model, deploy)
     execute(component.model_jar_backup_list),
@@ -112,6 +75,7 @@ def backup(model, deploy):
 
 @task()
 @parallel
+@func_exception_log("testt")
 def test(model, deploy):
     ''' 测试 '''
     print(yellow("***test 测试***"))

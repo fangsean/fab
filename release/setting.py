@@ -1,46 +1,10 @@
 # -*- encoding: utf-8 -*-
 import json
-import logging
-import logging.handlers
 import os
-import sys
-
-from fabric.api import *
 
 from release import ROOT_PATH
 from release.init import Init
-from release.util.fileUtil import file_name
-
-
-class Logger(object):
-    instance = None
-
-    def __new__(cls, *args, **kwargs):
-        if cls.instance is None:
-            cls.instance = super().__new__(cls, *args, **kwargs)
-        return cls.instance
-
-    def __init__(self):
-        log_root = os.path.join(ROOT_PATH, "..", "logs")
-        run("mkdir -p %s" % (log_root))
-        log_name = ''.join(env.host_string.split('.')) + '.log'
-        self.log_file = os.path.join(log_root, log_name)
-
-    def get_logger(self):
-        logger = logging.getLogger("fabric")
-        formater = logging.Formatter("%(asctime)s %(name)s %(levelname)s %(message)s", "%Y-%m-%d %H:%M:%S")
-        file_handler = logging.handlers.RotatingFileHandler(self.log_file, maxBytes=10240000, backupCount=5)
-        file_handler.setFormatter(formater)
-        stream_handler_err = logging.StreamHandler(sys.stderr)
-        stream_handler_stdout = logging.StreamHandler(sys.stdout)
-        stream_handler_stdin = logging.StreamHandler(sys.stdin)
-        sys.exc_info()
-        logger.addHandler(file_handler)
-        logger.addHandler(stream_handler_err)
-        logger.addHandler(stream_handler_stdout)
-        logger.addHandler(stream_handler_stdin)
-        logger.setLevel(logging.DEBUG)
-        return logger
+from release.util.files import file_name
 
 
 class Configer(object):
