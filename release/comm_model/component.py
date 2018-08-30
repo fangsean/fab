@@ -11,7 +11,7 @@ from fabric.contrib.console import confirm
 
 from release.setting import Configer
 from release.util.crypt import prpcrypt as CRYPT
-from release.util.mylog import func_exception_log
+from release.comm_model.wrapper import func_exception_log
 
 
 class Component(object):

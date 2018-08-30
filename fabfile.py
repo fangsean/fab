@@ -6,9 +6,8 @@ import click
 from fabric.api import *
 from fabric.colors import *
 
-from release.comm_model.component import MainComponent, GitComponent, BackUpComponent
+from release.comm_model.component import MainComponent, GitComponent, BackUpComponent,func_exception_log
 from release.setting import Configer
-from release.util.mylog import func_exception_log
 
 __configer = click.make_pass_decorator(Configer, ensure=True)
 
