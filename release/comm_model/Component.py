@@ -61,7 +61,7 @@ class Component(object):
     # @runs_once
     def model_end(self):
         self.__finnal_logger__.info(
-            blue("[INFO]  ............................................ [" + self.model + "] 工作流程执行完毕..."))
+            blue("[INFO]  ............................................ [" + self.model + "] 工作流程执行完毕!"))
 
     @staticmethod
     def extract_component_class(component_type):
