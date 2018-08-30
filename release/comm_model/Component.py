@@ -61,8 +61,7 @@ class Component(object):
     # @runs_once
     def model_end(self):
         self.__finnal_logger__.info(
-            self.__finnal_logger__.info(
-                blue("[INFO]  ............................................ [" + self.model + "] 工作流程执行完毕...")))
+            blue("[INFO]  ............................................ [" + self.model + "] 工作流程执行完毕..."))
 
     @staticmethod
     def extract_component_class(component_type):
@@ -104,9 +103,11 @@ class GitComponent(Component):
 
     @runs_once
     def model_branch_list(self):
-        with settings(hide('running'), warn_only=False):
+        self.__finnal_logger__.info("[INFO]  ............................................ 远程分支列表：")
+        with settings(hide('running', 'stdout'), warn_only=False):
             with lcd(self.path_local):
                 branchs = local("git remote show origin | awk '{L[NR]=$1}END{for (i=6;i<=NR-4;i++){print L[i]}}'")
+                self.__finnal_logger__.info(branchs)
                 return branchs
 
     # 代码更新合并
@@ -302,9 +303,11 @@ class BackUpComponent(Component):
                         run('mv -f ' + ' ' + os.path.join(self.path_remote, 'target', 'backup',
                                                           self.model + Component.FILE_TYPE) + ' ' + os.path.join(
                             self.path_remote, 'target'))
-                        self.__finnal_logger__.info(blue("[INFO]  ............................................ 还原jar文件成功 > model_jar_backup"))
+                        self.__finnal_logger__.info(
+                            blue("[INFO]  ............................................ 还原jar文件成功 > model_jar_backup"))
                     else:
-                        self.__finnal_logger__.error(red("[INFO]  ............................................ 未发现该文件 %s" % (file)))
+                        self.__finnal_logger__.error(
+                            red("[INFO]  ............................................ 未发现该文件 %s" % (file)))
                         sys.exit()
 
     # 6）重启服务：cd /home/admin/bsweb/bin; sh bsappstart.sh start
