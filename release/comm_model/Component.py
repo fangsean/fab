@@ -104,7 +104,7 @@ class GitComponent(Component):
     @runs_once
     def model_branch_list(self):
         self.__finnal_logger__.info("[INFO]  ............................................ 远程分支列表：")
-        with settings(hide('running', 'stdout'), warn_only=False):
+        with settings(hide('running'), warn_only=False):
             with lcd(self.path_local):
                 branchs = local("git remote show origin | awk '{L[NR]=$1}END{for (i=6;i<=NR-4;i++){print L[i]}}'")
                 self.__finnal_logger__.info(branchs)
