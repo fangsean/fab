@@ -1,22 +1,15 @@
 # -*- coding:utf-8 -*-
-from fabric.contrib.console import confirm
-from fabric.api import *
-from fabric.colors import *
 
 import sys
+
 import click
-from io import StringIO
 from fabric.api import *
 from fabric.colors import *
 
-from nq import pass_config
-from release.comm_model.Component import CRYPT
-from release.comm_model.Component import Component, MainComponent, GitComponent, BackUpComponent
-from release.comm_model.Component import config as __configer
-
+from release.comm_model.Component import MainComponent, GitComponent, BackUpComponent
 from release.setting import Configer
 
-comm_config = click.make_pass_decorator(Configer, ensure=True)
+__configer = click.make_pass_decorator(Configer, ensure=True)
 # env.user = user
 # env.password = password
 # env.hosts = hosts1
