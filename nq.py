@@ -61,7 +61,7 @@ def go(config, model, deploy):
         click.echo(yellow("\t如 go  --model bsweb --deploy pre "))
         sys.exit(red("================ Break =================="))
 
-    if model not in models and deploy not in deploys:
+    if model not in models or deploy not in deploys:
         click.echo(red("\t参数错误！"))
         click.echo(red("\t请输入[model]参数："))
         click.echo(magenta(list(config.get_params("servers").keys())))
@@ -94,7 +94,7 @@ def backup(config, model, deploy):
         click.echo(yellow("\t如 backup  --model bsweb --deploy pre "))
         sys.exit(red("================ Break =================="))
 
-    if model not in models and deploy not in deploys:
+    if model not in models or deploy not in deploys:
         click.echo(red("\t参数错误！"))
         click.echo(red("\t请输入[model]参数："))
         click.echo(magenta(list(config.get_params("servers").keys())))
