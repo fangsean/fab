@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="748dc003-3f74-48fe-ab9d-000ee6a76a5f" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/release/comm_model/Component.py" afterPath="$PROJECT_DIR$/release/comm_model/Component.py" />
+      <change beforePath="$PROJECT_DIR$/fabfile.py" afterPath="$PROJECT_DIR$/fabfile.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -28,11 +28,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="fabfile.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="fabfile.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fabfile.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="341">
-              <caret line="21" column="24" lean-forward="true" selection-start-line="21" selection-start-column="24" selection-end-line="21" selection-end-column="24" />
+            <state relative-caret-position="221">
+              <caret line="101" column="4" lean-forward="false" selection-start-line="101" selection-start-column="4" selection-end-line="101" selection-end-column="4" />
               <folding>
                 <element signature="e#24#34#0" expanded="true" />
               </folding>
@@ -60,11 +60,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Component.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Component.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/release/comm_model/Component.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="163">
-              <caret line="63" column="101" lean-forward="false" selection-start-line="63" selection-start-column="101" selection-end-line="63" selection-end-column="101" />
+            <state relative-caret-position="136">
+              <caret line="62" column="36" lean-forward="true" selection-start-line="62" selection-start-column="36" selection-end-line="62" selection-end-column="36" />
               <folding>
                 <element signature="e#23#34#0" expanded="true" />
               </folding>
@@ -149,7 +149,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>backup</find>
       <find>deploy</find>
       <find>get_params</find>
       <find>__configer__</find>
@@ -164,7 +163,6 @@
       <find>exist</find>
       <find>++++++++===========加载完成=================+++++++++</find>
       <find>===========================</find>
-      <find>================================ START TASK ==============================</find>
       <find>项目服务名</find>
       <find>model_end</find>
       <find>sys.exit</find>
@@ -179,6 +177,8 @@
       <find>[&quot; + self.model + &quot;] 工作流程执行完毕</find>
       <find>Component.runmkdir</find>
       <find>model_server_kill</find>
+      <find>工作流程执行完毕...</find>
+      <find>================================ START TASK ==============================</find>
     </findStrings>
     <replaceStrings>
       <replace>admin</replace>
@@ -234,10 +234,10 @@
         <option value="$PROJECT_DIR$/setup.py" />
         <option value="$PROJECT_DIR$/nq.py" />
         <option value="$PROJECT_DIR$/release/util/logs.py" />
-        <option value="$PROJECT_DIR$/fabfile.py" />
         <option value="$PROJECT_DIR$/release/init.py" />
         <option value="$PROJECT_DIR$/release/setting.py" />
         <option value="$PROJECT_DIR$/release/comm_model/Component.py" />
+        <option value="$PROJECT_DIR$/fabfile.py" />
       </list>
     </option>
   </component>
@@ -861,16 +861,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fabfile.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="341">
-          <caret line="21" column="24" lean-forward="true" selection-start-line="21" selection-start-column="24" selection-end-line="21" selection-end-column="24" />
-          <folding>
-            <element signature="e#24#34#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/release/comm_model/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -899,10 +889,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/release/comm_model/Component.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
-          <caret line="63" column="101" lean-forward="false" selection-start-line="63" selection-start-column="101" selection-end-line="63" selection-end-column="101" />
+        <state relative-caret-position="136">
+          <caret line="62" column="36" lean-forward="true" selection-start-line="62" selection-start-column="36" selection-end-line="62" selection-end-column="36" />
           <folding>
             <element signature="e#23#34#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fabfile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="101" column="4" lean-forward="false" selection-start-line="101" selection-start-column="4" selection-end-line="101" selection-end-column="4" />
+          <folding>
+            <element signature="e#24#34#0" expanded="true" />
           </folding>
         </state>
       </provider>

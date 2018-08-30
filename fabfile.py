@@ -34,7 +34,7 @@ env.roledefs['git'] = ['localhost']
 def git(model,branch):
     ''' 执行代码更新任务 '''
 
-    print("***git 执行代码更新任务***")
+    click.echo("***git 执行代码更新任务***")
     if model == '' or branch == '':
         print(red("\t参数缺失！"))
         print(yellow("\t请输入执行参数:"))
@@ -44,7 +44,7 @@ def git(model,branch):
         print("Break")
         sys.exit(1)
 
-    print("================================ START TASK ==============================")
+    click.echo(blue("================================ START TASK =============================="))
     component = GitComponent(model, branch)
     execute(component.model_dir_check),
     execute(component.model_mvn_clone),
@@ -70,7 +70,7 @@ def go(model, deploy):
         print("Break")
         sys.exit(1)
 
-    print("================================ START TASK ==============================")
+    click.echo(blue("================================ START TASK =============================="))
     component = MainComponent(model, deploy)
     execute(component.model_dir_check()),
     execute(component.model_mvn_package),
@@ -98,7 +98,7 @@ def backup(model, deploy):
         print("Break")
         sys.exit(1)
 
-    print("================================ START TASK ==============================")
+    click.echo(blue("================================ START TASK =============================="))
     component = BackUpComponent(model, deploy)
     execute(component.model_jar_backup_list),
     execute(component.model_input_backup_file),
