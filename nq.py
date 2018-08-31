@@ -42,7 +42,7 @@ def git(config, model, branch):
         local('fab git:model=%s,branch=%s' % (model, branch))
     except Exception as e:
         click.echo(red("================================ ERROR TASK =============================="))
-    click.echo(blue("================================ END TASK =============================="))
+    click.echo(green("================================ END TASK =============================="))
 
 
 @main.command()
@@ -78,7 +78,7 @@ def go(config, model, deploy):
         local('fab go:model=%s,deploy=%s' % (model, deploy))
     except Exception as e:
         click.echo(red("================================ ERROR TASK =============================="))
-    click.echo(blue("================================ END TASK =============================="))
+    click.echo(green("================================ END TASK =============================="))
 
 
 @main.command()
@@ -115,7 +115,7 @@ def backup(config, model, deploy):
     except Exception as e:
         click.echo(red("================================ ERROR TASK =============================="))
 
-    click.echo(blue("================================ END TASK =============================="))
+    click.echo(green("================================ END TASK =============================="))
 
 
 @main.command()
@@ -132,7 +132,7 @@ def encrypt(config, passwd):
     click.echo(yellow("\tinput passwd:%s" % (passwd)))
     click.echo(yellow("\tencrypt passwd:%s" % (password_crypt)))
 
-    sys.exit(blue("================ END =================="))
+    sys.exit(green("================ END =================="))
 
 
 @main.command()
@@ -149,4 +149,4 @@ def test(config, model, deploy):
 
     local('fab test:model=%s,deploy=%s' % (model, deploy))
 
-    sys.exit(blue("================ END =================="))
+    sys.exit(green("================ END =================="))

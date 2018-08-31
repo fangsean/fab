@@ -27,22 +27,22 @@ class Init(Singleton):
     """
 
     # config
-    # __first_init = True
+    __first_init = True
 
     def __init__(self):
-        # if self.__first_init:
-        self.__final__config = configparser.ConfigParser()
-        self.__final__config.read(file_name(ROOT_PATH, '.ini'), encoding='utf-8')
-        self.config_params = {}
-        sections = self.__final__config.sections()
-        self.config_params = {
-            section: {
-                item[0]: item[1]
-                for item in self.__final__config.items(section)
+        if self.__first_init:
+            self.__final__config = configparser.ConfigParser()
+            self.__final__config.read(file_name(ROOT_PATH, '.ini'), encoding='utf-8')
+            self.config_params = {}
+            sections = self.__final__config.sections()
+            self.config_params = {
+                section: {
+                    item[0]: item[1]
+                    for item in self.__final__config.items(section)
+                }
+                for section in sections
             }
-            for section in sections
-        }
-        self.__first_init = False
+            self.__first_init = False
 
     # descriptor
     # def __get__(self, obj, objtype):

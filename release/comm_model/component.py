@@ -51,12 +51,12 @@ class Component(object):
                     click.echo(
                         yellow("[WARN]  ............................................ 已经杀掉进程，没有发现服务 > model_kill"))
                     break
-        click.echo(blue("[INFO]  ............................................ 停止服务完毕 > model_kill"))
+        click.echo(green("[INFO]  ............................................ 停止服务完毕 > model_kill"))
 
     # 发布成功
     # @runs_once
     def model_end(self):
-        click.echo(blue("[INFO]  ............................................ [" + self.model + "] 工作流程执行完毕!"))
+        click.echo(green("[INFO]  ............................................ [" + self.model + "] 工作流程执行完毕!"))
 
     @staticmethod
     def extract_component_class(component_type):
@@ -103,7 +103,7 @@ class GitComponent(Component):
     @func_exception_log()
     @runs_once
     def model_branch_list(self):
-        click.echo(blue("[INFO]  ............................................ 远程分支列表："))
+        click.echo(green("[INFO]  ............................................ 远程分支列表："))
         with settings(hide('running'), warn_only=False):
             with lcd(self.path_local):
                 branchs = local("git remote show origin | awk '{L[NR]=$1}END{for (i=6;i<=NR-4;i++){print L[i]}}'")
@@ -120,7 +120,7 @@ class GitComponent(Component):
                 local('git fetch')
                 local('git checkout %s' % (self.branch))
                 local('git merge origin/%s' % (self.branch))
-        click.echo(blue("[INFO]  ............................................ 更新合并成功 > model_merge"))
+        click.echo(green("[INFO]  ............................................ 更新合并成功 > model_merge"))
 
     # 代码更新合并
     @func_exception_log()
@@ -132,7 +132,7 @@ class GitComponent(Component):
                 local('git fetch')
                 local('git checkout %s' % (self.branch))
                 local('git pull origin %s' % (self.branch))
-        click.echo(blue("[INFO]  ............................................ 更新合并成功 > model_pull"))
+        click.echo(green("[INFO]  ............................................ 更新合并成功 > model_pull"))
 
 
 class MainComponent(Component):
@@ -160,11 +160,11 @@ class MainComponent(Component):
     @func_exception_log()
     @runs_once
     def model_mvn_package(self):
-        click.echo(blue("[INFO]  ............................................ 打包 > model_mvn_package"))
+        click.echo(green("[INFO]  ............................................ 打包 > model_mvn_package"))
         with settings(hide('running'), warn_only=False):
             with lcd(self.path_local):
                 local('mvn clean compile package install -Dmaven.test.skip=true -U -P %s' % (self.deploy))
-        click.echo(blue("[INFO]  ............................................ 打包成功 > model_mvn_package"))
+        click.echo(green("[INFO]  ............................................ 打包成功 > model_mvn_package"))
 
     # 3）发包：cp -rf /root/work/nq_basicservice/bs-web/target/bsweb.jar /home/admin/bsweb/target/temp
     # @runs_once
@@ -172,7 +172,7 @@ class MainComponent(Component):
     def model_jar_push(self):
         if self.model == None or self.model == '':
             return
-        click.echo(blue("[INFO]  ............................................ 远程发包 > model_jar_push"))
+        click.echo(green("[INFO]  ............................................ 远程发包 > model_jar_push"))
         with settings(hide('running'), warn_only=False):
             with lcd(self.path_local_target):
                 result = put(self.model + Component.FILE_TYPE,
@@ -182,7 +182,7 @@ class MainComponent(Component):
                     click.echo(red("[INFO]  ............................................ 远程发包失败 > model_jar_push"))
                     sys.exit()
                 else:
-                    click.echo(blue("[INFO]  ............................................ 远程发包成功 > model_jar_push"))
+                    click.echo(green("[INFO]  ............................................ 远程发包成功 > model_jar_push"))
 
     # 校验文件
     def model_jar_check(self):
@@ -202,38 +202,38 @@ class MainComponent(Component):
     # @runs_once
     @func_exception_log()
     def model_jar_upgraded(self):
-        click.echo(blue("[INFO]  ............................................ 替换jar文件 > model_jar_prod"))
+        click.echo(green("[INFO]  ............................................ 替换jar文件 > model_jar_prod"))
         with settings(hide('running'), warn_only=False):
             with cd(os.path.join(self.path_remote, 'target')):
                 if int(run(" [ -e '" + self.model + Component.FILE_TYPE + "' ] && echo 11 || echo 10")) == 11:
                     run(
                         'cp -rf  ' + self.model + Component.FILE_TYPE + '  ./backup/' + self.model + Component.FILE_TYPE + '.$(date +%Y%m%d.%H.%M)')
                 run('mv -f  ./temp/' + self.model + Component.FILE_TYPE + ' ./')
-        click.echo(blue("[INFO]  ............................................ 替换jar文件成功 > model_jar_prod"))
+        click.echo(green("[INFO]  ............................................ 替换jar文件成功 > model_jar_prod"))
 
     # 6）重启服务：cd /home/admin/bsweb/bin; sh bsappstart.sh start
     # @runs_once
     @func_exception_log()
     def model_server_startup(self):
-        click.echo(blue("[INFO]  ............................................ 重启服务 > model_server_startup"))
+        click.echo(green("[INFO]  ............................................ 重启服务 > model_server_startup"))
         with settings(hide('running'), warn_only=False):
             with cd(os.path.join(self.path_remote, 'bin')):
                 # run("find . -name '*appstart.sh' -exec {} start \;")
                 # run("sh bsappstart.sh start && sleep 3 ", pty=False)
                 run("find . -name '*appstart.sh' -exec {} start \; && sleep 3 ", pty=False)
-        click.echo(blue('[INFO]  ............................................ 重启服务完成 > model_server_startup'))
+        click.echo(green('[INFO]  ............................................ 重启服务完成 > model_server_startup'))
 
     # 查看服务
     # @runs_once
     @func_exception_log()
     def model_netstat(self):
-        click.echo(blue("[INFO]  ............................................ 查看服务 > model_netstat"))
-        click.echo(blue(".................正在查看，请稍等..........................."))
+        click.echo(green("[INFO]  ............................................ 查看服务 > model_netstat"))
+        click.echo(green(".................正在查看，请稍等..........................."))
         with settings(hide('running'), warn_only=True):
             local('sleep 2')
             run("ps aux | grep java | grep -v grep ", pty=False)
             local('sleep 1')
-            click.echo(blue("[INFO]  ............................................ JPS : "))
+            click.echo(green("[INFO]  ............................................ JPS : "))
             open_shell("jps && exit ")
 
 
@@ -260,7 +260,7 @@ class BackUpComponent(Component):
             if file == None or file == '' or self.model not in file:
                 red('输入有误，文件名称不规范,重新输入...')
             else:
-                click.echo(blue("您输入的文件名称是[%s]" % (file)))
+                click.echo(green("您输入的文件名称是[%s]" % (file)))
                 self.file = file
                 return
 
@@ -269,7 +269,7 @@ class BackUpComponent(Component):
     # @runs_once
     @func_exception_log()
     def model_jar_backup_list(self):
-        click.echo(blue("[INFO]  ............................................ 还原jar文件 > model_jar_backup"))
+        click.echo(green("[INFO]  ............................................ 还原jar文件 > model_jar_backup"))
         with settings(hide('running'), warn_only=False):
             with cd(os.path.join(self.path_remote, 'target', 'backup')):
                 result = run('ls  -l ' + os.path.join(self.path_remote, 'target',
@@ -287,7 +287,7 @@ class BackUpComponent(Component):
     def model_jar_backup(self, file):
         if file == None or file == '':
             raise Exception("备份文件错误，请检查！！")
-        click.echo(blue("[INFO]  ............................................ 还原jar文件 > model_jar_backup"))
+        click.echo(green("[INFO]  ............................................ 还原jar文件 > model_jar_backup"))
         with settings(hide('running'), warn_only=False):
             with cd(os.path.join(self.path_remote, 'target', 'backup')):
                 run("pwd")
@@ -300,7 +300,7 @@ class BackUpComponent(Component):
                                                           self.model + Component.FILE_TYPE) + ' ' + os.path.join(
                             self.path_remote, 'target'))
                         click.echo(
-                            blue("[INFO]  ............................................ 还原jar文件成功 > model_jar_backup"))
+                            green("[INFO]  ............................................ 还原jar文件成功 > model_jar_backup"))
                     else:
                         raise FileNotFoundError(
                             "[INFO]  ............................................ 未发现该文件 %s" % (file))
@@ -309,23 +309,23 @@ class BackUpComponent(Component):
     # @runs_once
     @func_exception_log()
     def model_server_startup(self):
-        click.echo(blue("[INFO]  ............................................ 重启服务 > model_server_startup"))
+        click.echo(green("[INFO]  ............................................ 重启服务 > model_server_startup"))
         with settings(hide('running'), warn_only=False):
             with cd(os.path.join(self.path_remote, 'bin')):
                 # run("find . -name '*appstart.sh' -exec {} start \;")
                 # run("sh bsappstart.sh start && sleep 3 ", pty=False)
                 run("find . -name '*appstart.sh' -exec {} start \; && sleep 3 ", pty=False)
-        click.echo(blue('[INFO]  ............................................ 重启服务完成 > model_server_startup'))
+        click.echo(green('[INFO]  ............................................ 重启服务完成 > model_server_startup'))
 
     # 查看服务
     # @runs_once
     @func_exception_log()
     def model_netstat(self):
-        click.echo(blue("[INFO]  ............................................ 查看服务 > model_netstat"))
-        click.echo(blue(".................正在查看，请稍等..........................."))
+        click.echo(green("[INFO]  ............................................ 查看服务 > model_netstat"))
+        click.echo(green(".................正在查看，请稍等..........................."))
         with settings(hide('running'), warn_only=False):
             local('sleep 2')
             run("ps aux | grep java | grep -v grep ", pty=False)
             local('sleep 1')
-            click.echo(blue("[INFO]  ............................................ JPS > "))
+            click.echo(green("[INFO]  ............................................ JPS > "))
             open_shell("jps && exit ")

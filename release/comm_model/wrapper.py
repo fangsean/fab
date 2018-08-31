@@ -12,7 +12,7 @@ def func_exception_log(name=None):
         @functools.wraps(func)
         def wrapper(*args, **kw):
             try:
-                print('call %s():' % func.__name__)
+                print(blue('............................................call %s():' % func.__name__))
                 return func(*args, **kw)
             except Exception as e:
                 click.echo(red(str(e)))

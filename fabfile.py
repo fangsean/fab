@@ -22,7 +22,7 @@ def git(model, branch):
     ''' 执行代码更新任务 '''
 
     click.echo("***git 执行代码更新任务***")
-    click.echo(blue("================================ START GIT TASK =============================="))
+    click.echo(green("================================ START GIT TASK =============================="))
     component = GitComponent(model, branch)
     execute(component.model_dir_check),
     execute(component.model_mvn_clone),
@@ -40,7 +40,7 @@ def go(model, deploy):
     ''' 执行发布任务 '''
 
     click.echo("***go 执行发布任务***")
-    click.echo(blue("================================ START GO TASK =============================="))
+    click.echo(green("================================ START GO TASK =============================="))
     component = MainComponent(model, deploy)
     # execute(component.model_dir_check()),
     execute(component.model_mvn_package),
@@ -60,7 +60,7 @@ def backup(model, deploy):
     ''' 执行回退任务 '''
 
     click.echo(yellow("***backup 执行回退任务***"))
-    click.echo(blue("================================ START BACKUP TASK =============================="))
+    click.echo(green("================================ START BACKUP TASK =============================="))
     component = BackUpComponent(model, deploy)
     execute(component.model_jar_backup_list),
     execute(component.model_input_backup_file),
