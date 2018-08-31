@@ -9,7 +9,7 @@ from release.util.files import file_name
 
 class Configer(object):
     instance = None
-    # __first_init = True
+    __first_init = True
 
     def __new__(cls, *args, **kwargs):
         if cls.instance is None:
