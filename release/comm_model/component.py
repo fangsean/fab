@@ -71,7 +71,7 @@ class Component(object):
     @staticmethod
     def runmkdir(dir):
         with settings(hide('running'), warn_only=False):
-            local(''' mkdir -p %s ''' % dir)
+            local(' mkdir -p %s ' % dir)
 
 
 class GitComponent(Component):
