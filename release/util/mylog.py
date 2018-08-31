@@ -6,12 +6,12 @@ from fabric.colors import *
 
 
 def Logger(log_name, name=None):
-    LOG_ROOT = os.getcwd() + os.altsep + "logs"
+    LOG_ROOT = os.getcwd() + os.sep + "logs"
     if os.path.isdir(LOG_ROOT) == False:
         os.mkdir(LOG_ROOT)
 
     # LOG_FILE是日志文件名
-    LOG_FILE = LOG_ROOT + os.altsep + log_name + "." + time.strftime('%Y-%m-%d-%H',
+    LOG_FILE = LOG_ROOT + os.sep + log_name + "." + time.strftime('%Y-%m-%d-%H',
                                                                      time.localtime(
                                                                          time.time()))
 
