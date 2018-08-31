@@ -42,7 +42,7 @@ def go(model, deploy):
     click.echo("***go 执行发布任务***")
     click.echo(blue("================================ START GO TASK =============================="))
     component = MainComponent(model, deploy)
-    execute(component.model_dir_check()),
+    # execute(component.model_dir_check()),
     execute(component.model_mvn_package),
     execute(component.model_jar_push),
     execute(component.model_server_kill),
