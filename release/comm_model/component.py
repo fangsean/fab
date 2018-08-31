@@ -114,7 +114,7 @@ class GitComponent(Component):
     @func_exception_log()
     @runs_once
     def model_merge(self):
-        self.__finnal_logger__.info("[INFO]  ............................................ 更新合并 > model_merge")
+        click.echo(green("[INFO]  ............................................ 更新合并 > model_merge"))
         with settings(hide('running'), warn_only=False):
             with lcd(self.path_local):
                 local('git fetch')
@@ -126,7 +126,7 @@ class GitComponent(Component):
     @func_exception_log()
     @runs_once
     def model_pull(self):
-        self.__finnal_logger__.info("[INFO]  ............................................ 更新合并 > model_pull")
+        click.echo(green("[INFO]  ............................................ 更新合并 > model_pull"))
         with settings(hide('running'), warn_only=False):
             with lcd(self.path_local):
                 local('git fetch')
@@ -155,6 +155,7 @@ class MainComponent(Component):
         # with settings(hide('warnings', 'running', 'stdout', 'stderr'), warn_only=False):
         Component.runmkdir(os.path.join(self.path_remote, 'target', 'temp'))
         Component.runmkdir(os.path.join(self.path_remote, 'target', 'backup'))
+
 
     # 2）打包：start /root/work/nq_basicservice/deploy/basicservice-mvn-build-prod.bat
     @func_exception_log()
