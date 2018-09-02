@@ -22,7 +22,7 @@ def git(model, branch):
     ''' 执行代码更新任务 '''
 
     click.echo("***git 执行代码更新任务***")
-    click.echo(green("================================ START GIT TASK =============================="))
+    click.echo(green("================================ START GIT TASK ================================"))
     component = GitComponent(model, branch)
     execute(component.model_dir_check),
     execute(component.model_mvn_clone),
@@ -35,12 +35,24 @@ def git(model, branch):
 
 @task()
 @parallel
+@func_exception_log("jar")
+def jar(model, deploy):
+    ''' 打包服务 ##被依赖的不需要发布的服务情况## '''
+    click.echo(yellow("***jar 打包服务依赖***"))
+    click.echo(green("================================ START JAR TASK ================================"))
+    component = MainComponent(model, deploy)
+    execute(component.model_mvn_package),
+    sys.exit(0)
+
+
+@task()
+@parallel
 @func_exception_log("go")
 def go(model, deploy):
     ''' 执行发布任务 '''
 
     click.echo("***go 执行发布任务***")
-    click.echo(green("================================ START GO TASK =============================="))
+    click.echo(green("================================ START GO TASK ================================"))
     component = MainComponent(model, deploy)
     # execute(component.model_dir_check()),
     execute(component.model_mvn_package),
@@ -60,7 +72,7 @@ def backup(model, deploy):
     ''' 执行回退任务 '''
 
     click.echo(yellow("***backup 执行回退任务***"))
-    click.echo(green("================================ START BACKUP TASK =============================="))
+    click.echo(green("================================ START BACKUP TASK ================================"))
     component = BackUpComponent(model, deploy)
     execute(component.model_jar_backup_list),
     execute(component.model_input_backup_file),
@@ -70,6 +82,21 @@ def backup(model, deploy):
     execute(component.model_netstat),
     execute(component.model_end)
     sys.exit(0)
+
+
+
+
+@task()
+@parallel
+@func_exception_log("kill")
+def kill(model, deploy):
+    ''' 停止服务进程 '''
+    click.echo(yellow("***kill 停止服务进程***"))
+    click.echo(green("================================ START KILL TASK ================================"))
+    component = BackUpComponent(model, deploy)
+    execute(component.model_server_kill),
+    sys.exit(0)
+
 
 
 @task()
