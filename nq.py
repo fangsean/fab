@@ -190,6 +190,43 @@ def kill(config, model, deploy):
     click.echo(green("================================ END TASK =============================="))
 
 
+@main.command()
+@click.option('--model', default=None, help='项目服务名.', type=str, required=False)
+@click.option('--deploy', default=None, help="版本环境", type=str, required=False)
+@pass_config
+def restart(config, model, deploy):
+    ''' 重启服务进程 '''
+
+    click.echo(yellow("***restart 重启服务进程***"))
+    models = list(config.get_params("servers").keys())
+    deploys = list(config.get_params("deploy").keys())
+
+    if model == None or deploy == None:
+        click.echo(red("\t参数缺失！"))
+        click.echo(red("\t请输入[model]参数："))
+        click.echo(magenta(list(config.get_params("servers").keys())))
+        click.echo(red("\t请输入[deploy]参数:"))
+        click.echo(magenta(list(config.get_params("deploy").keys())))
+        click.echo(yellow("\t如 restart --model bsweb --deploy pre "))
+        sys.exit(red("================ Break =================="))
+
+    if model not in models or deploy not in deploys:
+        click.echo(red("\t参数错误！"))
+        click.echo(red("\t请输入[model]参数："))
+        click.echo(magenta(list(config.get_params("servers").keys())))
+        click.echo(red("\t请输入[deploy]参数:"))
+        click.echo(magenta(list(config.get_params("deploy").keys())))
+        sys.exit(red("================ Break =================="))
+
+    try:
+        env.hosts = config.get_params("server_hosts", model, deploy)
+        local('fab restart:model=%s,deploy=%s' % (model, deploy))
+    except Exception as e:
+        click.echo(red("================================ ERROR TASK =============================="))
+
+    click.echo(green("================================ END TASK =============================="))
+
+
 
 @main.command()
 @click.argument('passwd', default=None, required=True, type=str)

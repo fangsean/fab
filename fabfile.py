@@ -98,6 +98,21 @@ def kill(model, deploy):
     sys.exit(0)
 
 
+@task()
+@parallel
+@func_exception_log("restart")
+def restart(model, deploy):
+    ''' 重启服务进程 '''
+    click.echo(yellow("***restart 重启服务进程***"))
+    click.echo(green("================================ START RESTART TASK ================================"))
+    component = BackUpComponent(model, deploy)
+    execute(component.model_server_kill),
+    execute(component.model_server_startup),
+    execute(component.model_netstat),
+    execute(component.model_end)
+    sys.exit(0)
+
+
 
 @task()
 @parallel

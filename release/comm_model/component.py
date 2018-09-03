@@ -95,7 +95,7 @@ class GitComponent(Component):
     @func_exception_log()
     @runs_once
     def model_mvn_clone(self):
-        with settings(hide('running'), warn_only=False):
+        with settings(hide( 'running', 'stdout'), warn_only=False):
             with lcd(self.root):
                 local("rm  -rf %s" % (self.path_local))
                 local('git clone -b %s %s' % (self.branch, self.path_git))
