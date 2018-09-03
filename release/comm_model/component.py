@@ -95,7 +95,7 @@ class GitComponent(Component):
     @func_exception_log()
     @runs_once
     def model_mvn_clone(self):
-        with settings(hide( 'running', 'stdout'), warn_only=False):
+        with settings(hide( 'running'), warn_only=False):
             with lcd(self.root):
                 local("rm  -rf %s" % (self.path_local))
                 local('git clone -b %s %s' % (self.branch, self.path_git))
@@ -162,7 +162,7 @@ class MainComponent(Component):
     @runs_once
     def model_mvn_package(self):
         click.echo(green("[INFO]  ............................................ 打包 > model_mvn_package"))
-        with settings(hide('running'), warn_only=False):
+        with settings(hide('running', 'stdout'), warn_only=False):
             with lcd(self.path_local):
                 local('mvn clean compile package install -Dmaven.test.skip=true -U -P %s' % (self.deploy))
         click.echo(green("[INFO]  ............................................ 打包成功 > model_mvn_package"))
