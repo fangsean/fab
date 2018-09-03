@@ -158,13 +158,18 @@ class MainComponent(Component):
 
 
     # 2）打包：start /root/work/nq_basicservice/deploy/basicservice-mvn-build-prod.bat
+    # import tqdm
+    # for i in tqdm.trange(0, 100, desc='Test', ncols=100):
+    #     sleep(0.1)
+
     @func_exception_log()
     @runs_once
     def model_mvn_package(self):
         click.echo(green("[INFO]  ............................................ 打包 > model_mvn_package"))
         with settings(hide('running', 'stdout'), warn_only=False):
             with lcd(self.path_local):
-                local('mvn clean compile package install -Dmaven.test.skip=true -U -P %s' % (self.deploy))
+                local('mvn clean compile package install -Dmaven.test.skip=true -U -P %s  | tqdm | wc -l ' % (self.deploy))
+                local('mvn clean compile package install -Dmaven.test.skip=true -U -P %s  | grep Compressing ' % (self.deploy))
         click.echo(green("[INFO]  ............................................ 打包成功 > model_mvn_package"))
 
     # 3）发包：cp -rf /root/work/nq_basicservice/bs-web/target/bsweb.jar /home/admin/bsweb/target/temp
