@@ -2,12 +2,19 @@
 
 
 #### 适用环境
-    根据 config.ini 文件进行配置 服务，远程主机，以及之间的依赖关系。
+    根据 config.ini 文件进行配置 服务，远程主机，路径相关信息，以及./config/$(*).json文件 配置主机，服务之间的依赖映射关系。。
 
 #### 提供功能有如下步骤：
-1. [ fab git ]  构建本地代码库
-2. [ fab go ]   远程发布服务
-3. [ fab backup ] 远程回退服务
+
+1.	git 执行代码更新任务
+2.	go 执行发布任务
+3.	backup 执行回退任务
+4.	jar 打包服务 ##被依赖的不需要发布的服务情况##
+5.	kill 停止服务进程
+6.	restart  重启服务进程
+7.	encrypt 加密字符串密码
+8.	test 测试
+
 
 
 ```linux
@@ -18,9 +25,14 @@ Warning: Command(s) not found:
 
 Available commands:
 
-    backup
-    git
-    go
+        backup   执行回退任务
+        encrypt  加密字符串密码
+        git      执行代码更新任务
+        go       执行发布任务
+        jar      打包服务 ##被依赖的不需要发布的服务情况##
+        kill     停止服务进程
+        restart  重启服务进程
+        test     测试
 
 
 ```
@@ -192,4 +204,7 @@ sellerweb = /home/admin/sellerweb/
 
 ```
 -----------------------
+#### init app
+```
 DOS:pip install --editable .
+```
