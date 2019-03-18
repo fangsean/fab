@@ -31,8 +31,3 @@
 #### 配置文件说明
 
 > 见 .ini文件 和 json文件
------------------------
-#### init app
-```
-DOS:pip install --editable .
-```
